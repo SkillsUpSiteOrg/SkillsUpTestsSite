@@ -1,5 +1,8 @@
 package ua.dp.skillsup.tests.dao.entity;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
@@ -23,8 +26,8 @@ public class TestDescription {
     @Column(name = "DATE")
     private Date dateOfCreation;
 
-    @Column(name = "TIME")
-    private Time maxTimeToPass;
+    @Column(name = "TIME_IN_MINUTES")
+    private int maxTimeToPassInMinutes;
 
     public long getTestDescriptionId() {
         return testDescriptionId;
@@ -46,16 +49,16 @@ public class TestDescription {
         return dateOfCreation;
     }
 
-    public void setDateOfCreation(Date dateOfCreation) {
-        this.dateOfCreation = dateOfCreation;
+    public void setDateOfCreation(DateTime dateOfCreation) {
+        this.dateOfCreation = dateOfCreation.toDate();
     }
 
-    public Time getMaxTimeToPass() {
-        return maxTimeToPass;
+    public int getMaxTimeToPassInMinutes() {
+        return maxTimeToPassInMinutes;
     }
 
-    public void setMaxTimeToPass(Time maxTimeToPass) {
-        this.maxTimeToPass = maxTimeToPass;
+    public void setMaxTimeToPassInMinutes(int maxTimeToPassInMinutes) {
+        this.maxTimeToPassInMinutes = maxTimeToPassInMinutes;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class TestDescription {
                 "Id=" + testDescriptionId +
                 ", Name='" + testName + '\'' +
                 ", Date of creation=" + dateOfCreation +
-                ", Max time to pass=" + maxTimeToPass +
+                ", Max time to pass=" + maxTimeToPassInMinutes +
                 '}';
     }
 
@@ -75,10 +78,9 @@ public class TestDescription {
 
         TestDescription that = (TestDescription) o;
 
+        if (maxTimeToPassInMinutes != that.maxTimeToPassInMinutes) return false;
         if (testDescriptionId != that.testDescriptionId) return false;
         if (dateOfCreation != null ? !dateOfCreation.equals(that.dateOfCreation) : that.dateOfCreation != null)
-            return false;
-        if (maxTimeToPass != null ? !maxTimeToPass.equals(that.maxTimeToPass) : that.maxTimeToPass != null)
             return false;
         if (testName != null ? !testName.equals(that.testName) : that.testName != null) return false;
 
@@ -90,7 +92,7 @@ public class TestDescription {
         int result = (int) (testDescriptionId ^ (testDescriptionId >>> 32));
         result = 31 * result + (testName != null ? testName.hashCode() : 0);
         result = 31 * result + (dateOfCreation != null ? dateOfCreation.hashCode() : 0);
-        result = 31 * result + (maxTimeToPass != null ? maxTimeToPass.hashCode() : 0);
+        result = 31 * result + maxTimeToPassInMinutes;
         return result;
     }
 }

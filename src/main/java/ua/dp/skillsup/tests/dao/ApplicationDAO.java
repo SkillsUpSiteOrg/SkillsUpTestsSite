@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface ApplicationDAO {
     void addTestDescription(TestDescription testDescription);
-    void deleteTestDescription(long id);
+    void deleteTestDescription(TestDescription testDescription);
     TestDescription getTestDescription(long id);
     void updateTestDescription(TestDescription testDescription);
     List<TestDescription> getAllTestDescriptions();

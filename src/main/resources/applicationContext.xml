@@ -16,6 +16,7 @@
         <property name="jpaDialect" ref="jpaDialect" />-->
     </bean>
 
+
     <!--<bean id="jpaVendorAdapter"
           class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="database" value="HSQL" />

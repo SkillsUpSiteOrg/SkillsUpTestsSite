@@ -11,4 +11,7 @@
   <data-source source="LOCAL" name="item-manager-pu" uuid="6550d86d-5b3b-4250-be1f-9e7552a72d06">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
+  <data-source source="LOCAL" name="MySQL - test@localhost" uuid="3ccd4f85-e8ac-4c21-9f26-7a8f1cd85f51">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
 </component>
