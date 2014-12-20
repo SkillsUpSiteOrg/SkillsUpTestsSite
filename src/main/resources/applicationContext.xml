@@ -7,7 +7,7 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="ua.dp.skillsup.tests" />
+    <context:component-scan base-package="ua.dp.skillsup.tests"/>
 
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -16,7 +16,7 @@
 
         <property name="persistenceUnitName" value="item-manager-pu"/>
 
-        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
+        <property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml"/>
 
         <property name="jpaDialect" ref="jpaDialect"/>
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
@@ -28,27 +28,29 @@
         </property>
     </bean>
 
-    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
 
     <bean id="jpaVendorAdapter"
           class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="database" value="${db.database.name}" />
-        <property name="databasePlatform" value="${db.dialect}" />
+        <property name="generateDdl" value="true"/>
+        <property name="showSql" value="true"/>
+        <property name="database" value="${db.database.name}"/>
+        <property name="databasePlatform" value="${db.dialect}"/>
     </bean>
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${db.driver.class}" />
-        <property name="url" value="${db.connection}" />
-        <property name="username" value="${db.username}" />
-        <property name="password" value="${db.password}" />
+        <property name="driverClassName" value="${db.driver.class}"/>
+        <property name="url" value="${db.connection}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
     </bean>
 
     <context:property-placeholder location="classpath:/connection.properties"/>
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 </beans>
