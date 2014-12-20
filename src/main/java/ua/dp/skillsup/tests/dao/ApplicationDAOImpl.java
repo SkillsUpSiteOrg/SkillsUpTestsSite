@@ -5,25 +5,24 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
- * Created by Daniel on 16.12.2014.
+ * Class to manage test descriptions in database.
  */
-@Repository
+@Repository("applicationDao")
 @Transactional
 public class ApplicationDAOImpl implements ApplicationDAO {
 
-    public EntityManager em = Persistence.createEntityManagerFactory("item-manager-pu").createEntityManager();
+    @PersistenceContext(unitName = "item-manager-pu")
+    public EntityManager em;
 
     @Override
     @Transactional
-    public void addTestDescription(TestDescription testDescription){
-        em.getTransaction().begin();
-        em.merge(testDescription);
-        em.getTransaction().commit();
+    public TestDescription addTestDescription(TestDescription testDescription){
+        return em.merge(testDescription);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     @Override
     @Transactional(readOnly = true)
     public List<TestDescription> getAllTestDescriptions(){
-        TypedQuery<TestDescription> namedQuery = em.createNamedQuery("TestDescription.getAll", TestDescription.class);
+        TypedQuery<TestDescription> namedQuery = em.createQuery("select c from TestDescription c", TestDescription.class);
         return namedQuery.getResultList();
     }
 
