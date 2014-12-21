@@ -5,28 +5,18 @@ import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ua.dp.skillsup.tests.config.DBUnitConfig;
-import ua.dp.skillsup.tests.dao.ApplicationDAO;
-import ua.dp.skillsup.tests.dao.ApplicationDAOImpl;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import java.sql.Time;
-import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
+@Ignore
 public class DaoTests extends DBUnitConfig{
 
     private ApplicationDAO dao = new ApplicationDAOImpl();
@@ -83,7 +73,7 @@ public class DaoTests extends DBUnitConfig{
     public void testDeleteTestDescription() throws Exception {
         TestDescription testDescription = new TestDescription();
         testDescription.setTestName(".NET-0");
-        testDescription.setDateOfCreation(new DateTime(2015, 01, 02, 0, 0));
+        testDescription.setDateOfCreation(new DateTime(2015, 1, 2, 0, 0));
         testDescription.setMaxTimeToPassInMinutes(70);
 
         testDescription = em.merge(testDescription);

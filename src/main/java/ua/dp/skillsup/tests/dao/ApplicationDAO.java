@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Daniel on 16.12.2014.
  */
 public interface ApplicationDAO {
-    void addTestDescription(TestDescription testDescription);
+    TestDescription addTestDescription(TestDescription testDescription);
     void deleteTestDescription(TestDescription testDescription);
     TestDescription getTestDescription(long id);
     void updateTestDescription(TestDescription testDescription);

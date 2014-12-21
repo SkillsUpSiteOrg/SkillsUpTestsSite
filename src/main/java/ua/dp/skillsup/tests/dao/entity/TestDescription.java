@@ -1,10 +1,8 @@
 package ua.dp.skillsup.tests.dao.entity;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.Date;
 
 
@@ -13,10 +11,9 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "TEST_DESCRIPTION")
-@NamedQuery(name = "TestDescription.getAll", query = "SELECT c from TestDescription c")
 public class TestDescription {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private long testDescriptionId;
 

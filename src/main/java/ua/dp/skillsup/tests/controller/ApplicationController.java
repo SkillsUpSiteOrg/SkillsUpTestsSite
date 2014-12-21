@@ -31,8 +31,7 @@ public class ApplicationController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView getPages() {
-        ModelAndView model = new ModelAndView("main");
-        return model;
+        return new ModelAndView("main");
     }
 
     @RequestMapping(value = "/getAllTestDescriptions", method = RequestMethod.GET)
