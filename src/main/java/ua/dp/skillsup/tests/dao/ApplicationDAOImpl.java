@@ -1,5 +1,6 @@
 package ua.dp.skillsup.tests.dao;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
@@ -28,9 +29,8 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     @Override
     @Transactional
     public void deleteTestDescription(TestDescription testDescription){
-        em.getTransaction().begin();
-        em.remove(testDescription);
-        em.getTransaction().commit();
+        TestDescription test = em.find(TestDescription.class, testDescription.getTestDescriptionId());
+        em.remove(test);
     }
 
     @Override
@@ -41,10 +41,21 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
     @Override
     @Transactional
-    public void updateTestDescription(TestDescription testDescription){
-        em.getTransaction().begin();
-        em.merge(testDescription);
-        em.getTransaction().commit();
+    public void updateTestDescription(long id, TestDescription testDescription){
+        TestDescription newTest;
+        if(em.find(TestDescription.class, id) != null){
+            //System.out.println("Not null in DAO update");
+            newTest = em.find(TestDescription.class, testDescription.getTestDescriptionId());
+            newTest.setTestName(testDescription.getTestName());
+            newTest.setDateOfCreation(new DateTime(testDescription.getDateOfCreation().getYear(),
+                    testDescription.getDateOfCreation().getMonth(), testDescription.getDateOfCreation().getDate(),
+                    testDescription.getDateOfCreation().getHours(), testDescription.getDateOfCreation().getMinutes()));
+            newTest.setMaxTimeToPassInMinutes(testDescription.getMaxTimeToPassInMinutes());
+            em.merge(newTest);
+        }
+        else{
+            System.out.println("There is no such entity in data base. Check the id.");
+        }
     }
 
     @Override

@@ -27,30 +27,27 @@ public class Application {
         test1.setMaxTimeToPassInMinutes(90);
 
         dao.addTestDescription(test1);
-//
-//        System.out.println("Current number of tests in DB: " + dao.getAllTestDescriptions().size());
-//        //Creating new TestDescription
-//        TestDescription test1 = new TestDescription();
-//        test1.setTestName("Java-0");
-//        test1.setDateOfCreation(new DateTime(2014, 12, 23, 0, 0));
-//        test1.setMaxTimeToPassInMinutes(90);
-//        //Adding new TestDescription to DB
-//        test1 = dao.addTestDescription(test1);
-//        for(TestDescription test : dao.getAllTestDescriptions()){
-//            System.out.println(test);
-//            //System.out.println("Check: " + dao.getTestDescription(test.getTestDescriptionId()));
-//        }
+
+        /*System.out.println("Current number of tests in DB: " + dao.getAllTestDescriptions().size());
+        for(TestDescription test : dao.getAllTestDescriptions()){
+            System.out.println(test);
+            test1 = test;
+            //System.out.println("Check: " + dao.getTestDescription(test.getTestDescriptionId()));
+        }
 //        //Trying to update my entity in DB. Now it adds new entity to DB, it's wrong.
-//        test1.setTestName("New Java-0");
-//        dao.updateTestDescription(test1);
-//        for(TestDescription test : dao.getAllTestDescriptions()){
-//            System.out.println(test);
-//        }
-//        //Deleting all entities in DB
-//        for(TestDescription test : dao.getAllTestDescriptions()){
-//            dao.deleteTestDescription(test);
-//        }
-//        System.out.println("Current number of tests in DB: " + dao.getAllTestDescriptions().size());
+        System.out.println("Updating the name of entity: ");
+        test1.setTestName("New Java-0");
+        dao.updateTestDescription(test1.getTestDescriptionId(), test1);
+        System.out.println("Current number of tests in DB: " + dao.getAllTestDescriptions().size());
+        for(TestDescription test : dao.getAllTestDescriptions()){
+            System.out.println(test);
+        }
+        //Deleting all entities in DB
+        for(TestDescription test : dao.getAllTestDescriptions()){
+            dao.deleteTestDescription(test);
+            System.out.println("Successfully deleted one");
+        }
+        System.out.println("Current number of tests in DB: " + dao.getAllTestDescriptions().size());*/
     }
 }
 

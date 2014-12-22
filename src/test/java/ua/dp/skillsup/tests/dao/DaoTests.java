@@ -1,22 +1,32 @@
 package ua.dp.skillsup.tests.dao;
 
 import org.dbunit.Assertion;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.Session;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ua.dp.skillsup.tests.config.DBUnitConfig;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import java.sql.Connection;
 import java.util.List;
 
 @Ignore
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = { "/applicationContext.xml" })
 public class DaoTests extends DBUnitConfig{
 
     private ApplicationDAO dao = new ApplicationDAOImpl();
@@ -90,7 +100,7 @@ public class DaoTests extends DBUnitConfig{
     public void testUpdateTestDescription() throws Exception {
         TestDescription testDescription = em.find(TestDescription.class, 1L);
         testDescription.setTestName("New Java");
-        dao.updateTestDescription(testDescription);
+        dao.updateTestDescription(1L, testDescription);
         TestDescription testDescriptionFromDb = em.find(TestDescription.class, 1L);
 
         Assert.assertEquals(testDescription.getTestName(), testDescriptionFromDb.getTestName());

@@ -21,7 +21,8 @@ public class DBUnitConfig extends DBTestCase {
 
     @Before
     public void setUp() throws Exception {
-        tester = new JdbcDatabaseTester(prop.getProperty("db.driver"),
+
+        tester = new JdbcDatabaseTester(prop.getProperty("db.driver.class"),
                 prop.getProperty("db.url"),
                 prop.getProperty("db.username"),
                 prop.getProperty("db.password"));
@@ -36,11 +37,18 @@ public class DBUnitConfig extends DBTestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, prop.getProperty("db.driver"));
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, prop.getProperty("db.driver.class"));
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, prop.getProperty("db.url"));
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, prop.getProperty("db.username"));
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, prop.getProperty("db.password"));
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, "");
+        /*tester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
+        try {
+            tester.setDataSet(getDataSet());
+            tester.onSetup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
     }
 
     @Override

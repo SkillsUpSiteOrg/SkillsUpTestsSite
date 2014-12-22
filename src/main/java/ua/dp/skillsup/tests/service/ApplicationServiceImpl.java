@@ -43,8 +43,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void updateTestDescription(TestDescription testDescription) {
-        dao.updateTestDescription(testDescription);
+    public void updateTestDescription(long id, TestDescription testDescription) {
+        dao.updateTestDescription(id, testDescription);
     }
 
     @Override

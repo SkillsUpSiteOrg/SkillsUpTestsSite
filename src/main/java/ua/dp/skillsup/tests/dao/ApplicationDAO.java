@@ -11,6 +11,6 @@ public interface ApplicationDAO {
     TestDescription addTestDescription(TestDescription testDescription);
     void deleteTestDescription(TestDescription testDescription);
     TestDescription getTestDescription(long id);
-    void updateTestDescription(TestDescription testDescription);
+    void updateTestDescription(long id, TestDescription testDescription);
     List<TestDescription> getAllTestDescriptions();
 }
