@@ -1,0 +1,15 @@
+.invisible {
+    display: none;
+}
+
+.notempty {
+    
+}
+
+.active {
+    background-color: #00BFFF;
+}
+
+.hide {
+    display: none !important;
+}

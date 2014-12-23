@@ -84,6 +84,12 @@
             <artifactId>spring-test</artifactId>
             <version>2.5.5</version>
         </dependency>
+        <!--JSTL-->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
 
     </dependencies>
 
