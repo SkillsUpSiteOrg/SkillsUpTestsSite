@@ -8,21 +8,21 @@
 	<servlet>
 		<servlet-name>mvc-dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
+        <!--<init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/mvc-dispatcher-servlet.xml</param-value>   <!--classpath:applicationContext.xml-->
-        </init-param>
+            <param-value>classpath:applicationContext.xml</param-value>   &lt;!&ndash;/WEB-INF/mvc-dispatcher-servlet.xml&ndash;&gt;
+        </init-param>-->
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>mvc-dispatcher</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml</param-value>
+        <param-value>classpath:applicationContext.xml</param-value>     <!--/main/resources/applicationContext.xml-->
     </context-param>
 
 	<listener>

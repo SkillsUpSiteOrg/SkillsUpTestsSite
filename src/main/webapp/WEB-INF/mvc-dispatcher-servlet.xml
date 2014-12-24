@@ -10,14 +10,15 @@
 
 	<context:component-scan base-package="ua.dp.skillsup.tests.controller" />
 
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-            <property name="prefix">
-		<value>/main/webapp/WEB-INF/pages/</value>
-            </property>
-            <property name="suffix">
-		<value>.jsp</value>
-            </property>
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
 	</bean>
+
+    <bean name="/home.htm"
+          class="ua.dp.skillsup.tests.controller.ApplicationController">
+        <!--<property name="rantService" ref="rantService" />-->
+    </bean>
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
