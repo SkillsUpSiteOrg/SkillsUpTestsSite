@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 import ua.dp.skillsup.tests.service.ApplicationService;
 
@@ -30,8 +29,13 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
+<<<<<<< HEAD
     public ModelAndView getPages() {
         return new ModelAndView("home");
+=======
+    public String getPages() {
+        return "main";
+>>>>>>> 9cc052eb84eb0bcabba0a65251b3526fb58ae51a
     }
 
     @RequestMapping(value = "/getAllTestDescriptions", method = RequestMethod.GET)
