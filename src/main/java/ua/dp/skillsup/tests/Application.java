@@ -4,15 +4,10 @@ import org.joda.time.DateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import ua.dp.skillsup.tests.dao.ApplicationDAO;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
@@ -20,7 +15,7 @@ import ua.dp.skillsup.tests.dao.entity.TestDescription;
 @EnableWebMvc
 @ImportResource("classpath:/applicationContext.xml")
 @EnableAutoConfiguration
-public class Application extends WebMvcConfigurerAdapter {
+public class Application {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(Application.class, args);
@@ -35,6 +30,11 @@ public class Application extends WebMvcConfigurerAdapter {
         test1.setMaxTimeToPassInMinutes(90);
 
         dao.addTestDescription(test1);
+
+        for (String beanName : context.getBeanDefinitionNames()) {
+            System.out.println(beanName);
+        }
+
 
         /*System.out.println("Current number of tests in DB: " + dao.getAllTestDescriptions().size());
         for(TestDescription test : dao.getAllTestDescriptions()){
@@ -58,16 +58,5 @@ public class Application extends WebMvcConfigurerAdapter {
         System.out.println("Current number of tests in DB: " + dao.getAllTestDescriptions().size());*/
     }
 
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
 
-    @Bean
-    public InternalResourceViewResolver getViewResolver(){
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/pages/");
-        viewResolver.setSuffix(".jsp");
-        return viewResolver;
-    }
 }

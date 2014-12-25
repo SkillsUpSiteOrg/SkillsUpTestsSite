@@ -63,11 +63,10 @@
     <context:component-scan base-package="ua.dp.skillsup.tests.service" />
     <context:component-scan base-package="ua.dp.skillsup.tests.controller" />
 
-    <!--<mvc:default-servlet-handler/>-->
-
-    <!--<mvc:annotation-driven />-->
-    <!--<mvc:view-resolvers>-->
-        <!--<mvc:jsp prefix="/WEB-INF/pages" suffix=".jsp"/>-->
-    <!--</mvc:view-resolvers>-->
+    <mvc:view-resolvers>
+        <mvc:jsp prefix="/WEB-INF/pages/" suffix=".jsp"/>
+    </mvc:view-resolvers>
     <!--<import resource="classpath:/mvc-dispatcher-servlet.xml"/>-->
+    <mvc:default-servlet-handler/>
+
 </beans>
