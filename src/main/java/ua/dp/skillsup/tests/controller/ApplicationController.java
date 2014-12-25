@@ -30,8 +30,13 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView getPages() {
-        return new ModelAndView("main.jsp");
+    public String getPages() {
+        return "main";
+    }
+
+    @RequestMapping(value = "/error", method = RequestMethod.GET)
+    public String getError() {
+        return "main";
     }
 
     @RequestMapping(value = "/getAllTestDescriptions", method = RequestMethod.GET)
