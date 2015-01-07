@@ -1,5 +1,5 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	      http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 
@@ -8,44 +8,25 @@
 	<servlet>
 		<servlet-name>mvc-dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-<<<<<<< HEAD
-        <!--<init-param>
+        <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:applicationContext.xml</param-value>   &lt;!&ndash;/WEB-INF/mvc-dispatcher-servlet.xml&ndash;&gt;
-        </init-param>-->
-=======
-		<init-param>
-			<param-name>contextClass</param-name>
-			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
-		</init-param>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>ua.dp.skillsup.tests.Application</param-value>
-		</init-param>
-
->>>>>>> 9cc052eb84eb0bcabba0a65251b3526fb58ae51a
+            <param-value>/WEB-INF/mvc-dispatcher-servlet.xml</param-value>   <!--/WEB-INF/mvc-dispatcher-servlet.xml-->
+        </init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>mvc-dispatcher</servlet-name>
-		<url-pattern>*.htm</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-<<<<<<< HEAD
-    <context-param>
+    <!--<context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml</param-value>     <!--/main/resources/applicationContext.xml-->
-    </context-param>
-=======
-    <!--<context-param>-->
-        <!--<param-name>contextConfigLocation</param-name>-->
-        <!--<param-value>classpath:applicationContext.xml</param-value>-->
-    <!--</context-param>-->
->>>>>>> 9cc052eb84eb0bcabba0a65251b3526fb58ae51a
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>-->
 
-	<!--<listener>-->
-		<!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
-	<!--</listener>-->
+	<!--<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>-->
 
 </web-app>

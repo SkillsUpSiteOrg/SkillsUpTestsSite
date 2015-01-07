@@ -17,7 +17,7 @@ import java.util.List;
 @Transactional
 public class ApplicationDAOImpl implements ApplicationDAO {
 
-    @PersistenceContext(unitName = "item-manager-pu")
+    @PersistenceContext
     public EntityManager em;
 
     @Override

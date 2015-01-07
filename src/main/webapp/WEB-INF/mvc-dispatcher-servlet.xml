@@ -11,16 +11,16 @@
 	<context:component-scan base-package="ua.dp.skillsup.tests.controller" />
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/pages/"/>
-        <property name="suffix" value=".jsp"/>
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".html"/>
 	</bean>
 
-    <bean name="/home.htm"
+    <!--<bean name="/home.htm"
           class="ua.dp.skillsup.tests.controller.ApplicationController">
-        <!--<property name="rantService" ref="rantService" />-->
-    </bean>
+        &lt;!&ndash;<property name="rantService" ref="rantService" />&ndash;&gt;
+    </bean>-->
 
-	<mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:resources mapping="/**" location="/" />
 
 	<mvc:annotation-driven />
 

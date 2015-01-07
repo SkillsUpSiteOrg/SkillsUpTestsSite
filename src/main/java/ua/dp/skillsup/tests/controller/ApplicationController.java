@@ -1,10 +1,16 @@
 package ua.dp.skillsup.tests.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 import ua.dp.skillsup.tests.service.ApplicationService;
 
@@ -29,14 +35,17 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-<<<<<<< HEAD
     public ModelAndView getPages() {
-        return new ModelAndView("home");
-=======
-    public String getPages() {
-        return "main";
->>>>>>> 9cc052eb84eb0bcabba0a65251b3526fb58ae51a
+        System.out.println("getPages() method is running...");
+        return new ModelAndView("index");
     }
+
+    /*@RequestMapping("/"*//*, method = RequestMethod.GET*//*)
+    public String index (*//*Model model*//*) {
+        //System.out.println("index() method is running...");
+        //model.addAttribute("index");
+        return "index";
+    }*/
 
     @RequestMapping(value = "/getAllTestDescriptions", method = RequestMethod.GET)
     public @ResponseBody List<TestDescription> getAllTestDescriptions() {
