@@ -34,18 +34,17 @@ public class ApplicationController {
         this.service = service;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView getPages() {
         System.out.println("getPages() method is running...");
         return new ModelAndView("index");
-    }
-
-    /*@RequestMapping("/"*//*, method = RequestMethod.GET*//*)
-    public String index (*//*Model model*//*) {
-        //System.out.println("index() method is running...");
-        //model.addAttribute("index");
-        return "index";
     }*/
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index (Model model) {
+        System.out.println("index() method is running...");
+        return "index";
+    }
 
     @RequestMapping(value = "/getAllTestDescriptions", method = RequestMethod.GET)
     public @ResponseBody List<TestDescription> getAllTestDescriptions() {

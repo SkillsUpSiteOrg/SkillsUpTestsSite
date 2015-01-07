@@ -26,38 +26,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
 @Configuration
-//@EnableWebMvc
+@EnableWebMvc
 @EnableAutoConfiguration
 @ComponentScan
-public class Application implements WebApplicationInitializer/*extends SpringBootServletInitializer*/ {
-
-    /*@Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
-
-    @Bean
-    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) {
-        ServletRegistrationBean registration = new ServletRegistrationBean(
-                dispatcherServlet);
-        registration.addUrlMappings("*//*");
-        return registration;
-    }*/
-    @Override
-    public void onStartup(ServletContext container) {
-        XmlWebApplicationContext appContext = new XmlWebApplicationContext();
-        appContext.setConfigLocation("/WEB-INF/mvc-dispatcher-servlet.xml");
-
-        ServletRegistration.Dynamic dispatcher =
-                container.addServlet("mvc-dispatcher", new DispatcherServlet(appContext));
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/");
-    }
+public class Application {
 
     @Bean
     public InternalResourceViewResolver setupViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setPrefix("/static/");
         resolver.setSuffix(".html");
         return resolver;
     }
@@ -79,12 +56,4 @@ public class Application implements WebApplicationInitializer/*extends SpringBoo
             System.out.println(test);
         }
     }
-
-    /*@Bean
-    InternalResourceViewResolver internalResourceViewResolver () {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".html");
-        return viewResolver;
-    }*/
 }
