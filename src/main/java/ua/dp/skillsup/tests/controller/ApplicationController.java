@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 import ua.dp.skillsup.tests.service.ApplicationService;
 
@@ -30,14 +30,25 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView getPages() {
-        return new ModelAndView("main.jsp");
+    public String index() {
+        return "index";
     }
 
     @RequestMapping(value = "/getAllTestDescriptions", method = RequestMethod.GET)
     public @ResponseBody List<TestDescription> getAllTestDescriptions() {
-        List<TestDescription> testDescriptions = new ArrayList<>();
+        List<TestDescription> testDescriptions = new ArrayList<TestDescription>();
         testDescriptions.addAll(service.getAllTestDescriptions());
         return testDescriptions;
+    }
+
+    @RequestMapping(value = "/addNewTestDescription", method = RequestMethod.POST)
+    public @ResponseBody String addNewTestDescription(
+            @RequestParam(value = "testName", required = true) String testName,
+            @RequestParam(value = "maxTimeToPassInMinutes", required = true) int maxTimeToPassInMinutes) {
+        TestDescription testDescription = new TestDescription();
+        testDescription.setTestName(testName);
+        testDescription.setMaxTimeToPassInMinutes(maxTimeToPassInMinutes);
+        service.addTestDescription(testDescription);
+        return "{\"some\" : \"Successfully added new test "+testDescription.getTestName()+"\"}";
     }
 }
