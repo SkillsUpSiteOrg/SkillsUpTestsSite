@@ -1,0 +1,47 @@
+
+<div class="container">
+  <h2>SkillsUpTests</h2>
+   <!-- TestDescriptions input -->
+  <form role="form" class="form-inline"  ng-submit="addNewTest()">
+
+        <input ng-model="testName" type="text" placeholder="What will be the test's name?"
+               class="form-control input-xxlarge">
+        <!--<input ng-model="dateOfCreation" type="date"  class="form-control" placeholder="dd-MM-yyyy">-->
+            <!--<span class="add-on"><i class="icon-th"></i></span>-->
+        <input ng-model="maxTimeToPassInMinutes" type="text" placeholder="The maximum time for passing test in minutes"
+               class="form-control input-mini">
+        <input type="submit" class="btn btn-primary" value="Add">
+
+  </form>
+
+      <p></p>
+      <button class="btn btn-default" ng-click="getAllTests()" aria-label="Get">Get all tests</button>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th data-field="testDescriptionId" data-align="right">ID</th>
+            <th data-field="dateOfCreation" data-align="center">Date creation</th>
+            <th data-field="testName" data-align="center">Test name</th>
+            <th data-field="maxTimeToPassInMinutes" data-align="left">Minutes todo</th>
+        </tr>
+        </thead>
+        <tbody ui-sortable ng-model="tests"><tr ng-repeat="test in tests" style="padding:5px 10px; cursor: move;">
+            <td>{{test.testDescriptionId}}</td>
+            <td>{{test.dateOfCreation | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+            <td>{{test.testName}}</td>
+            <td>{{test.maxTimeToPassInMinutes}}</td>
+        </tr></tbody>
+    </table>
+
+    <!--<div ui-sortable ng-model="tests">
+	  <p class="input-group" ng-repeat="test in tests" style="padding:5px 10px; cursor: move;">
+
+          <input type="text" class="form-control">
+		<span class="input-group-btn">
+		  <button class="btn btn-danger" ng-click="removeTest($index)" aria-label="Remove">X</button>
+		</span>
+	  </p>
+	</div>-->
+</div>
+

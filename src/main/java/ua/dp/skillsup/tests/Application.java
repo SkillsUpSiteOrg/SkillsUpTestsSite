@@ -1,24 +1,12 @@
 package ua.dp.skillsup.tests;
 
-import org.joda.time.DateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.context.support.XmlWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import ua.dp.skillsup.tests.dao.ApplicationDAO;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
@@ -29,15 +17,8 @@ import javax.servlet.ServletRegistration;
 @EnableWebMvc
 @EnableAutoConfiguration
 @ComponentScan
+@ImportResource("classpath:/applicationContext.xml")
 public class Application {
-
-    @Bean
-    public InternalResourceViewResolver setupViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/static/");
-        resolver.setSuffix(".html");
-        return resolver;
-    }
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(Application.class, args);
@@ -46,7 +27,6 @@ public class Application {
 
         TestDescription test1 = new TestDescription();
         test1.setTestName("Java-0");
-        test1.setDateOfCreation(new DateTime(2014, 12, 23, 0, 0));
         test1.setMaxTimeToPassInMinutes(90);
 
         dao.addTestDescription(test1);
