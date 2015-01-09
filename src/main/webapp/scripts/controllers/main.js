@@ -4,8 +4,6 @@
 
 angular.module('SkillsUpTests')
   .controller('MainCtrl',function ($scope, localStorageService, $http, $location) {
-    var testsInStore = localStorageService.get('tests');
-    //$scope.tests = testsInStore || [];
     var host = $location.absUrl().substr(0, $location.absUrl().lastIndexOf("#"));
 
     $scope.getAllTests = function () {
@@ -19,7 +17,6 @@ angular.module('SkillsUpTests')
 
     $scope.addNewTest = function() {
         console.log($scope.testName);
-        /*console.log($scope.dateOfCreation);*/
         console.log($scope.maxTimeToPassInMinutes);
         $http({
             method: 'POST',

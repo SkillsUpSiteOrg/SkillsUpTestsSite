@@ -34,10 +34,6 @@ angular
         templateUrl: 'pages/creator.html',
         controller: 'CreatorCtrl'
       })
-        .when('/main', {
-            templateUrl: 'pages/main.html',
-            controller: 'MainCtrl'
-        })
       .otherwise({
         redirectTo: '/'
       });
