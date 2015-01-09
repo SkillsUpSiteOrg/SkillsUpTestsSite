@@ -66,10 +66,7 @@ public class ApplicationDaoTest {
 
     @Test
     public void testDeleteTestDescription() throws Exception {
-        long testId = 0;
-        for(TestDescription test : dao.getAllTestDescriptions()){
-            testId = test.getTestDescriptionId();
-        }
+        long testId = dao.getAllTestDescriptions().get(0).getTestDescriptionId();
         TestDescription testDescription = dao.getTestDescription(testId);
         dao.deleteTestDescription(testDescription);
         TestDescription testDescriptionActual = dao.getTestDescription(testId);
@@ -78,10 +75,7 @@ public class ApplicationDaoTest {
 
     @Test
     public void testUpdateTestDescription() throws Exception {
-        long testId = 0;
-        for(TestDescription test : dao.getAllTestDescriptions()){
-            testId = test.getTestDescriptionId();
-        }
+        long testId = dao.getAllTestDescriptions().get(0).getTestDescriptionId();
         TestDescription testDescription = dao.getTestDescription(testId);
         testDescription.setTestName("New Java");
         dao.updateTestDescription(testId, testDescription);
@@ -92,14 +86,11 @@ public class ApplicationDaoTest {
 
     @Test
     public void testGetTestDescription() throws Exception {
-        long testId = 0;
-        for(TestDescription test : dao.getAllTestDescriptions()){
-            testId = test.getTestDescriptionId();
-        }
+        long testId = dao.getAllTestDescriptions().get(0).getTestDescriptionId();
         TestDescription testDescription = dao.getTestDescription(testId);
 
         Assert.assertEquals(testDescription.getTestDescriptionId(), testId);
-        Assert.assertEquals(testDescription.getTestName(), ".NET-2");
-        Assert.assertEquals(testDescription.getMaxTimeToPassInMinutes(), 120);
+        Assert.assertEquals(testDescription.getTestName(), ".NET-1");
+        Assert.assertEquals(testDescription.getMaxTimeToPassInMinutes(), 90);
     }
 }
