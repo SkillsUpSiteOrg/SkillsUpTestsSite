@@ -30,10 +30,5 @@ public class Application {
         test1.setMaxTimeToPassInMinutes(90);
 
         dao.addTestDescription(test1);
-
-        System.out.println("Current number of tests in DB: " + dao.getAllTestDescriptions().size());
-        for(TestDescription test : dao.getAllTestDescriptions()){
-            System.out.println(test);
-        }
     }
 }
