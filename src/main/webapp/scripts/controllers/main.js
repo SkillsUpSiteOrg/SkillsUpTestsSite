@@ -15,6 +15,12 @@ angular.module('SkillsUpTests')
         })
     };
 
+    $scope.setSelected = function(index) {
+        $scope.selected = this.test;
+        $scope.index = index;
+        console.log($scope.selected);
+    };
+
     $scope.addNewTest = function() {
         console.log($scope.testName);
         console.log($scope.maxTimeToPassInMinutes);
@@ -30,6 +36,10 @@ angular.module('SkillsUpTests')
         });
         $scope.testName = '';
         $scope.maxTimeToPassInMinutes = '';
+    };
+
+    $scope.editSelectedTest = function(){
+        window.location = 'pages/editTest.html';
     };
 
   });

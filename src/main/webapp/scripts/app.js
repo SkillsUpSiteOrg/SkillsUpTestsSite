@@ -34,6 +34,10 @@ angular
         templateUrl: 'pages/creator.html',
         controller: 'CreatorCtrl'
       })
+        .when('/editTest', {
+            templateUrl: 'pages/editTest.html',
+            controller: 'EditTestCtrl'
+        })
       .otherwise({
         redirectTo: '/'
       });

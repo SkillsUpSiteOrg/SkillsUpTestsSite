@@ -1,19 +1,20 @@
 
+
 <div class="container">
-  <h2>SkillsUpTests</h2>
-   <!-- TestDescriptions input -->
-  <form role="form" class="form-inline"  ng-submit="addNewTest()">
+    <h2>Editing selected test</h2>
+    <!-- TestDescriptions input -->
+    <form role="form" class="form-inline"  ng-submit="editTest()">
 
-        <input ng-model="testName" type="text" placeholder="What will be the test's name?"
+        <input ng-model="testName" type="text" placeholder="Edit test's name"
                class="form-control input-xxlarge">
-        <input ng-model="maxTimeToPassInMinutes" type="text" placeholder="The maximum time for passing test in minutes"
+        <input ng-model="maxTimeToPassInMinutes" type="text" placeholder="Edit max time"
                class="form-control input-mini">
-        <input type="submit" class="btn btn-primary" value="Add">
+        <input type="submit" class="btn btn-primary" value="Edit test">
 
-  </form>
+    </form>
 
-      <p> </p>
-      <button class="btn btn-default" ng-click="getAllTests()" aria-label="Get">Get all tests</button>
+    <p> </p>
+    <button class="btn btn-default" ng-click="getAllTests()" aria-label="Get">Get all tests</button>
 
     <table class="table table-striped">
         <thead>
@@ -32,7 +33,6 @@
             <td>{{test.dateOfCreation | date:'dd-MM-yyyy HH:mm:ss'}}</td>
         </tr></tbody>
     </table>
-    <button class="btn btn-small btn-primary" ng-click="editSelectedTest()">Edit selected test</button>
+    <button class="btn btn-small btn-primary">Edit selected test</button>
     <button class="btn btn-small btn-danger">X</button>
 </div>
-
