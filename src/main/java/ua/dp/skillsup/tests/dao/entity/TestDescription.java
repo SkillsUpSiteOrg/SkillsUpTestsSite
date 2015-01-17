@@ -2,10 +2,13 @@ package ua.dp.skillsup.tests.dao.entity;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -32,6 +35,20 @@ public class TestDescription {
 
     @Column(name = "TIME_IN_MINUTES")
     private int maxTimeToPassInMinutes;
+
+    /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    @ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "testDescriptions")
+    @Fetch(FetchMode.JOIN)
+    private List<QuestionAnswers> questionAnswers;
+
+    public List<QuestionAnswers> getQuestionAnswers() {
+        return questionAnswers;
+    }
+
+    public void setQuestionAnswers(List<QuestionAnswers> questionAnswers) {
+        this.questionAnswers = questionAnswers;
+    }
+    /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
     public long getTestDescriptionId() {
         return testDescriptionId;

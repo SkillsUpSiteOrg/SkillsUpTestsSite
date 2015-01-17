@@ -8,10 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import ua.dp.skillsup.tests.dao.ApplicationDAO;
+import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
 
 @Configuration
 @EnableWebMvc
@@ -28,6 +26,15 @@ public class Application {
         TestDescription test1 = new TestDescription();
         test1.setTestName("Java-0");
         test1.setMaxTimeToPassInMinutes(90);
+
+        QuestionAnswers questionAnswers = new QuestionAnswers();
+        questionAnswers.setQuestion("How it working....?");
+        questionAnswers.addAnswer("ans1", false);
+        questionAnswers.addAnswer("ans2", false);
+        questionAnswers.addAnswer("ans3", true);
+        questionAnswers.addAnswer("ans4", false);
+        System.out.println(questionAnswers.toString());
+
 
         dao.addTestDescription(test1);
     }

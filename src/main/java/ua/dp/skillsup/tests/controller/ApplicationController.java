@@ -51,4 +51,20 @@ public class ApplicationController {
         service.addTestDescription(testDescription);
         return "{\"some\" : \"Successfully added new test "+testDescription.getTestName()+"\"}";
     }
+
+    /*@RequestMapping(value = "/getAllQuestionAnswers/{identifier}", method = RequestMethod.GET)
+    public @ResponseBody List<QuestionAnswers> getAllQuestionAnswers(@PathVariable String identifier) {
+        List<QuestionAnswers> questionAnswers = repository.findAllAddressesForContact(identifier);
+        String name;
+        if (addressesForContact.size() > 0) {
+            name = addressesForContact.get(0).getName();
+        } else {
+            name = repository.loadContactDetails(identifier).getName();
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("addresses", addressesForContact);
+        map.put("identifier", identifier);
+        map.put("name", name);
+        return map;
+    }*/
 }
