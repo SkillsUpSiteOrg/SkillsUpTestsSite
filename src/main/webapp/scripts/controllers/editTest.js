@@ -2,7 +2,7 @@ angular.module('SkillsUpTests')
     .controller('EditTestCtrl',function ($scope, localStorageService, $http, $location) {
         var host = $location.absUrl().substr(0, $location.absUrl().lastIndexOf("#"));
         $scope.editTest = function () {
-            $scope.selected
+            console.log($scope.selected);
             $http({
                 method: 'POST',
                 url: host+'editTestDescription',

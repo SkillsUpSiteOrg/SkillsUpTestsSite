@@ -39,7 +39,7 @@ angular.module('SkillsUpTests')
     };
 
     $scope.editSelectedTest = function(){
-        window.location = 'pages/editTest.html';
+        $location.path('editTest');
     };
 
   });
