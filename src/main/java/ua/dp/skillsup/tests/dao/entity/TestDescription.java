@@ -37,7 +37,9 @@ public class TestDescription {
     private int maxTimeToPassInMinutes;
 
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-    @ManyToMany(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "testDescriptions")
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}
+            /*mappedBy = "testDescriptions"*/)
     @Fetch(FetchMode.JOIN)
     private List<QuestionAnswers> questionAnswers;
 
@@ -47,6 +49,9 @@ public class TestDescription {
 
     public void setQuestionAnswers(List<QuestionAnswers> questionAnswers) {
         this.questionAnswers = questionAnswers;
+        for (QuestionAnswers questionAnswer : questionAnswers) {
+            questionAnswer.addTestDescriptions(this);
+        }
     }
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
