@@ -1,9 +1,16 @@
+
 angular.module('SkillsUpTests')
-    .controller('EditTestCtrl',function ($scope, localStorageService, $http, $location) {
+    .controller('TestEditorCtrl',function ($rootScope, $scope, localStorageService, $http, $location) {
         var host = $location.absUrl().substr(0, $location.absUrl().lastIndexOf("#"));
+        //console.log($rootScope.testForEdit);
+        $scope.selectedTest = $rootScope.testForEdit;
+        //console.log($scope.selectedTest);
+
         $scope.editTest = function () {
-            console.log($scope.selected);
-            $http({
+            //console.log($scope.selected);
+            console.log($scope.selectedTest.testName);
+            console.log($scope.selectedTest.maxTimeToPassInMinutes);
+            /*$http({
                 method: 'POST',
                 url: host+'editTestDescription',
                 data: $.param({"testName":$scope.testName, "maxTimeToPassInMinutes":$scope.maxTimeToPassInMinutes}),
@@ -12,6 +19,6 @@ angular.module('SkillsUpTests')
                 .success(function(data) {
                     $scope.message = data;
                     console.log($scope.message);
-                });
+                });*/
         };
     });

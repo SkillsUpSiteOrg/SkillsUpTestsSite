@@ -1,0 +1,14 @@
+
+
+<div class="container">
+    <h2>Editing selected test</h2>
+    <!-- TestDescriptions input -->
+    <form role="form" class="form-inline"  ng-submit="editTest()">
+
+        <input ng-model="selectedTest.testName" type="text" placeholder="Edit test's name"
+               class="form-control input-xxlarge">
+        <input ng-model="selectedTest.maxTimeToPassInMinutes" type="text" placeholder="Edit max time"
+               class="form-control input-mini">
+        <input type="submit" class="btn btn-primary" value="Submit edition">
+    </form>
+</div>
