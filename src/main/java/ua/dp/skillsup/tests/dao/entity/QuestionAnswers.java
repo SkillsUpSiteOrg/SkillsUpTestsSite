@@ -1,10 +1,11 @@
 package ua.dp.skillsup.tests.dao.entity;
 
-import com.google.common.collect.Maps;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,31 +13,38 @@ import java.util.Map;
  * Created by Daniel on 26.12.2014.
  */
 @Entity
-@Table(name = "QUESTION_ANSWER")
+@Table(name = "QUESTION_ANSWERS")
 public class QuestionAnswers {
+
+    public QuestionAnswers(){
+        this.answers = new HashMap<String, Boolean>();
+        this.testDescriptionRelations = new ArrayList<TestDescription>();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    private long questionAnswerId;
+    private long questionAnswersId;
 
     @Column(name = "QUESTION")
     private String question;
 
-    @Column(name = "ANSWER")
+    @Column(name = "ANSWERS")
     @ElementCollection
     private Map<String, Boolean> answers;
 
-    @ManyToMany(mappedBy = "questionAnswers", fetch = FetchType.EAGER, cascade={CascadeType.MERGE})
+    @ManyToMany(mappedBy = "questionAnswersRelations",
+            fetch = FetchType.EAGER,
+            cascade={CascadeType.ALL})
     @Fetch(FetchMode.JOIN)
-    private List<TestDescription> testDescriptions;
+    private List<TestDescription> testDescriptionRelations;
 
-    public long getQuestionAnswerId() {
-        return questionAnswerId;
+    public long getQuestionAnswersId() {
+        return questionAnswersId;
     }
 
-    public void setQuestionAnswerId(long questionAnswerId) {
-        this.questionAnswerId = questionAnswerId;
+    public void setQuestionAnswersId(long questionAnswerId) {
+        this.questionAnswersId = questionAnswerId;
     }
 
     public String getQuestion() {
@@ -55,21 +63,21 @@ public class QuestionAnswers {
         this.answers = answer;
     }
 
-    public List<TestDescription> getTestDescriptions() {
-        return testDescriptions;
+    public List<TestDescription> getTestDescriptionRelations() {
+        return testDescriptionRelations;
     }
 
-    public void setTestDescriptions(List<TestDescription> testDescriptions) {
-        this.testDescriptions = testDescriptions;
+    public void setTestDescriptionRelations(List<TestDescription> testDescriptionRelations) {
+        this.testDescriptionRelations = testDescriptionRelations;
     }
 
     @Override
     public String toString() {
         return "QuestionAnswer{" +
-                "questionAnswerId=" + questionAnswerId +
+                "questionAnswerId=" + questionAnswersId +
                 ", question='" + question + '\'' +
-                ", answer='" + answers + '\'' +
-                ", used in tests=" + testDescriptions +
+                ", answers='" + answers + '\'' +
+                ", used in tests=" + testDescriptionRelations +
                 '}';
     }
 
@@ -80,10 +88,10 @@ public class QuestionAnswers {
 
         QuestionAnswers that = (QuestionAnswers) o;
 
-        if (questionAnswerId != that.questionAnswerId) return false;
+        if (questionAnswersId != that.questionAnswersId) return false;
         if (answers != null ? !answers.equals(that.answers) : that.answers != null) return false;
         if (question != null ? !question.equals(that.question) : that.question != null) return false;
-        if (testDescriptions != null ? !testDescriptions.equals(that.testDescriptions) : that.testDescriptions != null)
+        if (testDescriptionRelations != null ? !testDescriptionRelations.equals(that.testDescriptionRelations) : that.testDescriptionRelations != null)
             return false;
 
         return true;
@@ -91,21 +99,18 @@ public class QuestionAnswers {
 
     @Override
     public int hashCode() {
-        int result = (int) (questionAnswerId ^ (questionAnswerId >>> 32));
+        int result = (int) (questionAnswersId ^ (questionAnswersId >>> 32));
         result = 31 * result + (question != null ? question.hashCode() : 0);
         result = 31 * result + (answers != null ? answers.hashCode() : 0);
-        result = 31 * result + (testDescriptions != null ? testDescriptions.hashCode() : 0);
+        result = 31 * result + (testDescriptionRelations != null ? testDescriptionRelations.hashCode() : 0);
         return result;
     }
 
     public void addAnswers(String answer, boolean correct) {
-        if(answers == null){
-            answers = Maps.newHashMap();
-        }
         answers.put(answer, correct);
     }
 
-    public void addTestDescriptions(TestDescription testDescription) {
-        testDescriptions.add(testDescription);
+    public void addTestDescriptionRelations(TestDescription testDescription) {
+        testDescriptionRelations.add(testDescription);
     }
 }

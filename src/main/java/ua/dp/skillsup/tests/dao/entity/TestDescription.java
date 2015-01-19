@@ -7,6 +7,7 @@ import org.hibernate.annotations.FetchMode;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class TestDescription {
 
     public TestDescription(){
         this.dateOfCreation = new Date();
+        this.questionAnswersRelations = new ArrayList<QuestionAnswers>();
     }
 
     @Id
@@ -38,20 +40,24 @@ public class TestDescription {
 
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     @ManyToMany(fetch = FetchType.EAGER,
-            cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}
-            /*mappedBy = "testDescriptions"*/)
+            cascade={CascadeType.ALL})
     @Fetch(FetchMode.JOIN)
-    private List<QuestionAnswers> questionAnswers;
+    private List<QuestionAnswers> questionAnswersRelations;
 
-    public List<QuestionAnswers> getQuestionAnswers() {
-        return questionAnswers;
+    public List<QuestionAnswers> getQuestionAnswersRelations() {
+        return questionAnswersRelations;
     }
 
-    public void setQuestionAnswers(List<QuestionAnswers> questionAnswers) {
-        this.questionAnswers = questionAnswers;
-        for (QuestionAnswers questionAnswer : questionAnswers) {
-            questionAnswer.addTestDescriptions(this);
+    public void setQuestionAnswersRelations(List<QuestionAnswers> questionAnswersRelations) {
+        this.questionAnswersRelations = questionAnswersRelations;
+        for (QuestionAnswers questionAnswersRelation : questionAnswersRelations) {
+            questionAnswersRelation.addTestDescriptionRelations(this);
         }
+    }
+
+    public void addQuestionAnswersRelations(QuestionAnswers questionAnswers) {
+        questionAnswersRelations.add(questionAnswers);
+        questionAnswers.addTestDescriptionRelations(this);
     }
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

@@ -3,6 +3,7 @@ package ua.dp.skillsup.tests.dao;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
 import javax.persistence.EntityManager;
@@ -56,4 +57,60 @@ public class ApplicationDAOImpl implements ApplicationDAO {
         return namedQuery.getResultList();
     }
 
+    @Override
+    public QuestionAnswers addQuestionAnswers(QuestionAnswers questionAnswers) {
+        return em.merge(questionAnswers);
+    }
+
+    @Override
+    public void deleteQuestionAnswers(QuestionAnswers questionAnswers) {
+        QuestionAnswers questionAnswers_ = em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId());
+        em.remove(questionAnswers_);
+    }
+
+    @Override
+    public QuestionAnswers getQuestionAnswers(long id) {
+        return em.find(QuestionAnswers.class, id);
+    }
+
+    @Override
+    public void updateQuestionAnswers(long id, QuestionAnswers questionAnswers) {
+        QuestionAnswers newQuestionAnswers;
+        if(em.find(QuestionAnswers.class, id) != null){
+            newQuestionAnswers = em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId());
+            newQuestionAnswers.setQuestion(questionAnswers.getQuestion());
+            newQuestionAnswers.setAnswers(questionAnswers.getAnswers());
+            newQuestionAnswers.setTestDescriptionRelations(questionAnswers.getTestDescriptionRelations());
+            em.merge(newQuestionAnswers);
+        }
+        else{
+            System.out.println("There is no such entity in data base. Check the id.");
+        }
+    }
+
+    @Override
+    public List<QuestionAnswers> getAllQuestionAnswers() {
+        TypedQuery<QuestionAnswers> namedQuery = em.createQuery("select c from QuestionAnswers c", QuestionAnswers.class);
+        return namedQuery.getResultList();
+    }
+
+    @Override
+    public List<QuestionAnswers> getAllQuestionAnswersForTestDescription(TestDescription testDescription) {
+        String queryString = "SELECT DISTINCT qa FROM QuestionAnswers qa " +
+                "INNER JOIN qa.testDescriptionRelations tdr"+
+                "WHERE tdr.testDescriptionId = :testDescriptionId";
+        TypedQuery<QuestionAnswers> namedQuery = em.createQuery(queryString, QuestionAnswers.class);
+        namedQuery.setParameter("testDescriptionId", testDescription.getTestDescriptionId());
+        return namedQuery.getResultList();
+    }
+
+    @Override
+    public List<TestDescription> getAllTestDescriptionForQuestionAnswers(QuestionAnswers questionAnswers) {
+        String queryString = "SELECT DISTINCT td FROM TestDescription td " +
+                "INNER JOIN td.questionAnswersRelations qar"+
+                "WHERE qa.questionAnswersId = :questionAnswersId";
+        TypedQuery<TestDescription> namedQuery = em.createQuery(queryString, TestDescription.class);
+        namedQuery.setParameter("questionAnswersId", questionAnswers.getQuestionAnswersId());
+        return namedQuery.getResultList();
+    }
 }

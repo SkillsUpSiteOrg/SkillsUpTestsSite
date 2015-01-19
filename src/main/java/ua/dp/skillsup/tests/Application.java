@@ -37,17 +37,16 @@ public class Application {
         questionAnswers.addAnswers("ans3", true);
         questionAnswers.addAnswers("ans4", false);
         System.out.println(questionAnswers.toString());
-
-        test1.setQuestionAnswers(Lists.newArrayList(questionAnswers));
-
+        test1.setQuestionAnswersRelations(Lists.newArrayList(questionAnswers));
+        test1.addQuestionAnswersRelations(questionAnswers);
         test1 = dao.addTestDescription(test1);
 
+        System.out.println(test1.getQuestionAnswersRelations().get(0));
         dao.getTestDescription(test1.getTestDescriptionId());
-        List<QuestionAnswers> questionAnswers1 = test1.getQuestionAnswers();
+        List<QuestionAnswers> questionAnswers1 = test1.getQuestionAnswersRelations();
         System.out.println(test1);
-        List<QuestionAnswers> questionAnswers2 = test1.getQuestionAnswers();
+        List<QuestionAnswers> questionAnswers2 = test1.getQuestionAnswersRelations();
         System.out.println(questionAnswers1.get(0));
         System.out.println(questionAnswers2.get(0));
-
     }
 }

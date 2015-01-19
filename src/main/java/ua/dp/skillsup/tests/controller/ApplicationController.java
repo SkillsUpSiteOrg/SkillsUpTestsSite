@@ -2,10 +2,8 @@ package ua.dp.skillsup.tests.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 import ua.dp.skillsup.tests.service.ApplicationService;
 
@@ -52,19 +50,49 @@ public class ApplicationController {
         return "{\"some\" : \"Successfully added new test "+testDescription.getTestName()+"\"}";
     }
 
-    /*@RequestMapping(value = "/getAllQuestionAnswers/{identifier}", method = RequestMethod.GET)
-    public @ResponseBody List<QuestionAnswers> getAllQuestionAnswers(@PathVariable String identifier) {
-        List<QuestionAnswers> questionAnswers = repository.findAllAddressesForContact(identifier);
-        String name;
-        if (addressesForContact.size() > 0) {
-            name = addressesForContact.get(0).getName();
-        } else {
-            name = repository.loadContactDetails(identifier).getName();
-        }
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("addresses", addressesForContact);
-        map.put("identifier", identifier);
-        map.put("name", name);
-        return map;
-    }*/
+    @RequestMapping(value = "/addNewQuestionAnswersByTestDescriptionId", method = RequestMethod.POST)
+    public @ResponseBody String addNewQuestionAnswersByTestDescriptionId(
+            @RequestParam(value = "question", required = true) String question,
+            @RequestParam(value = "testDescriptionId", required = true) long testDescriptionId) {
+
+        TestDescription testDescription = service.getTestDescription(testDescriptionId);
+
+        QuestionAnswers questionAnswers = new QuestionAnswers();
+        questionAnswers.setQuestion(question);
+
+        service.addQuestionAnswers(questionAnswers);
+        return "{\"id\" : "+questionAnswers.getQuestionAnswersId()+"\"}";
+    }
+
+    @RequestMapping(value = "/addNewAnswerByQuestionAnswersId", method = RequestMethod.POST)
+    public @ResponseBody String addNewAnswerByQuestionAnswersId(
+            @RequestParam(value = "question", required = true) String question,
+            @RequestParam(value = "testDescriptionId", required = true) int testDescriptionId) {
+        QuestionAnswers questionAnswers = new QuestionAnswers();
+        questionAnswers.setQuestion(question);
+
+        service.addQuestionAnswers(questionAnswers);
+        return "{\"id\" : "+questionAnswers.getQuestionAnswersId()+"\"}";
+    }
+
+    @RequestMapping(value = "/getAllQuestionAnswersByTestDescriptionId/{id}", method = RequestMethod.GET)
+    public @ResponseBody List<QuestionAnswers> getAllQuestionAnswersByTestDescriptionId(@PathVariable Long id) {
+        List<QuestionAnswers> questionAnswers = service.getTestDescription(id).getQuestionAnswersRelations();
+
+        return questionAnswers;
+    }
+
+    @RequestMapping(value = "/getAllTestDescriptionByQuestionAnswersId/{id}", method = RequestMethod.GET)
+    public @ResponseBody List<TestDescription> getAllTestDescriptionByQuestionAnswersId(@PathVariable Long id) {
+        List<TestDescription> testDescriptions = service.getQuestionAnswers(id).getTestDescriptionRelations();
+
+        return testDescriptions;
+    }
+
+    @RequestMapping(value = "/getAllQuestionAnswers", method = RequestMethod.GET)
+    public @ResponseBody List<QuestionAnswers> getAllQuestionAnswers() {
+        List<QuestionAnswers> questionAnswerses = new ArrayList<QuestionAnswers>();
+        questionAnswerses.addAll(service.getAllQuestionAnswers());
+        return questionAnswerses;
+    }
 }
