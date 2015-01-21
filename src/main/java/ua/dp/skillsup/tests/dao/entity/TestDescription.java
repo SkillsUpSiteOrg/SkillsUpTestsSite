@@ -1,7 +1,6 @@
 package ua.dp.skillsup.tests.dao.entity;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.joda.time.DateTime;
@@ -15,6 +14,7 @@ import java.util.List;
 /**
  * Created by Daniel on 16.12.2014.
  */
+/*@Proxy(lazy=false)*/
 @Entity
 @Table(name = "TEST_DESCRIPTION")
 public class TestDescription {
@@ -42,6 +42,7 @@ public class TestDescription {
     @ManyToMany(fetch = FetchType.EAGER,
             cascade={CascadeType.ALL})
     @Fetch(FetchMode.JOIN)
+    @JsonBackReference
     private List<QuestionAnswers> questionAnswersRelations;
 
     public List<QuestionAnswers> getQuestionAnswersRelations() {
@@ -103,7 +104,7 @@ public class TestDescription {
                 '}';
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -115,6 +116,7 @@ public class TestDescription {
                 .append(testDescriptionId, that.testDescriptionId)
                 .append(dateOfCreation, that.dateOfCreation)
                 .append(testName, that.testName)
+                .append(questionAnswersRelations, that.questionAnswersRelations)
                 .isEquals();
     }
 
@@ -125,6 +127,7 @@ public class TestDescription {
                 append(testName).
                 append(dateOfCreation).
                 append(maxTimeToPassInMinutes).
+                append(questionAnswersRelations).
                 toHashCode();
-    }
+    }*/
 }

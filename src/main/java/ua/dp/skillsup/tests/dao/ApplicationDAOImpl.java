@@ -8,6 +8,7 @@ import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @Transactional
 public class ApplicationDAOImpl implements ApplicationDAO {
 
-    @PersistenceContext
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
     public EntityManager em;
 
     @Override

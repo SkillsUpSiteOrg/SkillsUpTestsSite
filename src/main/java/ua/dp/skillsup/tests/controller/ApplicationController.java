@@ -89,6 +89,20 @@ public class ApplicationController {
         return testDescriptions;
     }
 
+    @RequestMapping(value = "/getQuestionAnswersById/{id}", method = RequestMethod.GET)
+    public @ResponseBody QuestionAnswers getQuestionAnswersById(@PathVariable Long id) {
+        QuestionAnswers questionAnswers = service.getQuestionAnswers(id);
+
+        return questionAnswers;
+    }
+
+    @RequestMapping(value = "/getTestDescriptionById/{id}", method = RequestMethod.GET)
+    public @ResponseBody TestDescription getTestDescriptionById(@PathVariable Long id) {
+        TestDescription testDescription = service.getTestDescription(id);
+
+        return testDescription;
+    }
+
     @RequestMapping(value = "/getAllQuestionAnswers", method = RequestMethod.GET)
     public @ResponseBody List<QuestionAnswers> getAllQuestionAnswers() {
         List<QuestionAnswers> questionAnswerses = new ArrayList<QuestionAnswers>();

@@ -1,6 +1,5 @@
 package ua.dp.skillsup.tests;
 
-import com.google.common.collect.Lists;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -36,17 +35,43 @@ public class Application {
         questionAnswers.addAnswers("ans2", false);
         questionAnswers.addAnswers("ans3", true);
         questionAnswers.addAnswers("ans4", false);
-        System.out.println(questionAnswers.toString());
-        test1.setQuestionAnswersRelations(Lists.newArrayList(questionAnswers));
+            System.out.println(questionAnswers.toString());
         test1.addQuestionAnswersRelations(questionAnswers);
-        test1 = dao.addTestDescription(test1);
+/*
+        test1.setQuestionAnswersRelations(Lists.newArrayList(questionAnswers));
+*/
 
-        System.out.println(test1.getQuestionAnswersRelations().get(0));
-        dao.getTestDescription(test1.getTestDescriptionId());
-        List<QuestionAnswers> questionAnswers1 = test1.getQuestionAnswersRelations();
-        System.out.println(test1);
-        List<QuestionAnswers> questionAnswers2 = test1.getQuestionAnswersRelations();
-        System.out.println(questionAnswers1.get(0));
-        System.out.println(questionAnswers2.get(0));
+
+        TestDescription test_1 = dao.addTestDescription(test1);
+            System.out.println(test_1.getQuestionAnswersRelations());
+
+        QuestionAnswers questionAnswers_1 = new QuestionAnswers();
+        questionAnswers_1.setQuestion("Why it working....?");
+        questionAnswers_1.addAnswers("ans1", true);
+        questionAnswers_1.addAnswers("ans2", false);
+        questionAnswers_1.addAnswers("ans3", false);
+        questionAnswers_1.addAnswers("ans4", true);
+            System.out.println(questionAnswers_1);
+        questionAnswers_1.addTestDescriptionRelations(test_1);
+        QuestionAnswers questionAnswers_11 = dao.addQuestionAnswers(questionAnswers_1);
+            System.out.println(questionAnswers_11);
+
+
+        TestDescription test_11 = dao.addTestDescription(test_1);
+        List<QuestionAnswers> listQuestionAnswers1 = test_11.getQuestionAnswersRelations();
+        /*List<QuestionAnswers> listQuestionAnswers2 = dao.getAllQuestionAnswersForTestDescription(test_11);*/
+            System.out.println(listQuestionAnswers1.toString());
+            /*System.out.println(listQuestionAnswers2.toString());*/
+
+
+            System.out.println(dao.getAllTestDescriptions().get(0).getQuestionAnswersRelations());
+        /*System.out.println(dao.getTestDescription(2));*/
+
+        System.out.println(dao.getAllQuestionAnswers());
+        System.out.println(dao.getQuestionAnswers(1));
+/*
+        System.out.println(dao.getQuestionAnswers(2));
+*/
+
     }
 }

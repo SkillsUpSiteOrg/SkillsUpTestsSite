@@ -1,5 +1,6 @@
 package ua.dp.skillsup.tests.dao.entity;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 /**
  * Created by Daniel on 26.12.2014.
  */
+/*@Proxy(lazy=false)*/
 @Entity
 @Table(name = "QUESTION_ANSWERS")
 public class QuestionAnswers {
@@ -30,13 +32,14 @@ public class QuestionAnswers {
     private String question;
 
     @Column(name = "ANSWERS")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Map<String, Boolean> answers;
 
     @ManyToMany(mappedBy = "questionAnswersRelations",
             fetch = FetchType.EAGER,
             cascade={CascadeType.ALL})
     @Fetch(FetchMode.JOIN)
+    @JsonManagedReference
     private List<TestDescription> testDescriptionRelations;
 
     public long getQuestionAnswersId() {
@@ -73,15 +76,15 @@ public class QuestionAnswers {
 
     @Override
     public String toString() {
-        return "QuestionAnswer{" +
-                "questionAnswerId=" + questionAnswersId +
+        return "QuestionAnswers{" +
+                "questionAnswersId=" + questionAnswersId +
                 ", question='" + question + '\'' +
                 ", answers='" + answers + '\'' +
                 ", used in tests=" + testDescriptionRelations +
                 '}';
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -104,7 +107,7 @@ public class QuestionAnswers {
         result = 31 * result + (answers != null ? answers.hashCode() : 0);
         result = 31 * result + (testDescriptionRelations != null ? testDescriptionRelations.hashCode() : 0);
         return result;
-    }
+    }*/
 
     public void addAnswers(String answer, boolean correct) {
         answers.put(answer, correct);
