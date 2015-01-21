@@ -69,9 +69,7 @@ public class Application {
 
         System.out.println(dao.getAllQuestionAnswers());
         System.out.println(dao.getQuestionAnswers(1));
-/*
         System.out.println(dao.getQuestionAnswers(2));
-*/
 
     }
 }

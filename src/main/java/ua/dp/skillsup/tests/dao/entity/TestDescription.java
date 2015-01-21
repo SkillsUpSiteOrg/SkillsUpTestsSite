@@ -1,6 +1,6 @@
 package ua.dp.skillsup.tests.dao.entity;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.joda.time.DateTime;
