@@ -51,4 +51,26 @@ public class ApplicationController {
         service.addTestDescription(testDescription);
         return "{\"some\" : \"Successfully added new test "+testDescription.getTestName()+"\"}";
     }
+
+    @RequestMapping(value = "/getQuestionAnswersOfTest", method = RequestMethod.POST)
+    public @ResponseBody List<String> getQuestionAnswersOfTest(
+            @RequestParam(value = "testDescriptionId", required = true) long testDescriptionId){
+        TestDescription testDescription = service.getTestDescription(testDescriptionId);
+        System.out.println(testDescription.getTestName());
+        List<String> list = new ArrayList<String>();
+        list.add("Question1");
+        list.add("Question2");
+        list.add("Question3");
+        return list;
+    }
+
+    @RequestMapping(value = "/getAllQuestionAnswers", method = RequestMethod.GET)
+    public @ResponseBody List<String> getAllQuestionAnswers(){
+        //List<String> allQuestionAnswers = service.getAllQuestionAnswers();
+        List<String> list = new ArrayList<String>();
+        list.add("Question10");
+        list.add("Question20");
+        list.add("Question30");
+        return list;
+    }
 }

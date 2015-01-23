@@ -4,11 +4,58 @@
     <h2>Editing selected test</h2>
     <!-- TestDescriptions input -->
     <form role="form" class="form-inline"  ng-submit="editTest()">
-
         <input ng-model="selectedTest.testName" type="text" placeholder="Edit test's name"
                class="form-control input-xxlarge">
         <input ng-model="selectedTest.maxTimeToPassInMinutes" type="text" placeholder="Edit max time"
                class="form-control input-mini">
         <input type="submit" class="btn btn-primary" value="Submit edition">
     </form>
+
+    <p> </p>
+
+    <h4>Questions of this test:</h4>
+    <table class="table table-striped" ng-table="existingQuestionsOfTest">
+        <thead>
+            <tr>
+                <th data-field="questionAnswerId" data-align="right">ID</th>
+                <th data-field="question" data-align="left">Question</th>
+                <th data-field="testDescriptions" data-align="left">Used in tests</th>
+                <th data-align="center">Remove from test</th>
+            </tr>
+        </thead>
+        <tbody ui-sortable ng-model="questionsOfTest">
+            <tr ng-repeat="question in questionsOfTest" style="padding:5px 10px; cursor: move;"
+                ng-click="setSelectedExistingQuestion($indexOfSelectedExistingQuestion)"
+                ng-class="{'info':$indexOfSelectedExistingQuestion == indexOfSelectedExistingQuestion}">
+                <!--<td>{{question.questionAnswerId}}</td>-->
+                <td>{{question}}</td>
+                <!--<td>{{question.testDescriptions}}</td>-->
+                <td><button class="btn btn-small btn-danger" ng-click="removeSelectedExistinqQuestion()">X</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <div  class="col-xs-12">
+        <h4>Add new question to test:</h4>
+        <select class="col-xs-10" multiple ng-multiple="true"
+                ng-model="allQuestions"
+                ng-options="question for question in allQuestions">
+            <!--<option ng-repeat="question in questionsOfTest">{{question}}</option>-->
+        </select>
+        <button class="btn btn-default col-xs-2" ng-click="addQuestionToTest()">Add to test>></button>
+    </div>
+    <br>
+    <div class="col-xs-12">
+        <h4>Create new question and add to test:</h4>
+        <input class="col-xs-12" type="text" placeholder="Enter the question" ng-model="newQuestion.text">
+        <br>
+        <br>
+        <div class="form-group" data-ng-repeat="answer in newQuestion.answers">
+            <input class="col-xs-10" type="text" placeholder="Enter the answer" ng-model="newQuestion.answers.answerText">
+            <input class="col-xs-1" type="checkbox" ng-model="newQuestion.answers.answerCorrect">Correct
+        </div>
+        <button class="btn btn-default col-xs-2" ng-click="addNewAnswer()">Add new answer>></button>
+        <br>
+        <button class="btn btn-small btn-primary" ng-click="addNewQuestionToTest()">Add new question to test</button>
+    </div>
 </div>
