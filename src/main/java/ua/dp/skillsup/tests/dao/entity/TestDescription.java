@@ -1,6 +1,7 @@
 package ua.dp.skillsup.tests.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Fetch;
@@ -44,7 +45,7 @@ public class TestDescription {
     @ManyToMany(fetch = FetchType.EAGER,
             cascade={CascadeType.ALL})
     @Fetch(FetchMode.JOIN)
-    @JsonBackReference
+    @JsonManagedReference
     private List<QuestionAnswers> questionAnswersRelations;
 
     public List<QuestionAnswers> getQuestionAnswersRelations() {

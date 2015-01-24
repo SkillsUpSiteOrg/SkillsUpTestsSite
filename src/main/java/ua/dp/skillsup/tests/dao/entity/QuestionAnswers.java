@@ -1,5 +1,6 @@
 package ua.dp.skillsup.tests.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -39,7 +40,7 @@ public class QuestionAnswers {
             fetch = FetchType.EAGER,
             cascade={CascadeType.ALL})
     @Fetch(FetchMode.JOIN)
-    @JsonManagedReference
+    @JsonBackReference
     private List<TestDescription> testDescriptionRelations;
 
     public long getQuestionAnswersId() {
@@ -84,7 +85,7 @@ public class QuestionAnswers {
                 '}';
     }
 
-    /*@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -107,7 +108,7 @@ public class QuestionAnswers {
         result = 31 * result + (answers != null ? answers.hashCode() : 0);
         result = 31 * result + (testDescriptionRelations != null ? testDescriptionRelations.hashCode() : 0);
         return result;
-    }*/
+    }
 
     public void addAnswers(String answer, boolean correct) {
         answers.put(answer, correct);
