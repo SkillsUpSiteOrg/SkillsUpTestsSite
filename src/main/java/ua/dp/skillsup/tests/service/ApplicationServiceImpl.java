@@ -79,12 +79,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<QuestionAnswers> getAllQuestionAnswersForTestDescription(TestDescription testDescription) {
-        return dao.getAllQuestionAnswersForTestDescription(testDescription);
+    public List<QuestionAnswers> getAllQuestionAnswersOfTestDescription(TestDescription testDescription) {
+        return dao.getAllQuestionAnswersOfTestDescription(testDescription);
     }
 
     @Override
-    public List<TestDescription> getAllTestDescriptionForQuestionAnswers(QuestionAnswers questionAnswers) {
-        return dao.getAllTestDescriptionForQuestionAnswers(questionAnswers);
+    public List<TestDescription> getAllTestDescriptionOfQuestionAnswers(QuestionAnswers questionAnswers) {
+        return dao.getAllTestDescriptionOfQuestionAnswers(questionAnswers);
     }
 }

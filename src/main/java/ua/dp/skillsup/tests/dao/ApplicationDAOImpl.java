@@ -65,8 +65,12 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
     @Override
     public void deleteQuestionAnswers(QuestionAnswers questionAnswers) {
-        QuestionAnswers questionAnswers_ = em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId());
-        em.remove(questionAnswers_);
+        questionAnswers = this.em.merge(questionAnswers);
+        this.em.remove(questionAnswers);
+
+        /*QuestionAnswers questionAnswers_ = this.em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId());
+        this.em.remove(questionAnswers_);*/
+
     }
 
     @Override
@@ -96,20 +100,18 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     }
 
     @Override
-    public List<QuestionAnswers> getAllQuestionAnswersForTestDescription(TestDescription testDescription) {
-        String queryString = "SELECT DISTINCT qa FROM QuestionAnswers qa " +
-                "INNER JOIN qa.testDescriptionRelations tdr"+
-                "WHERE tdr.testDescriptionId = :testDescriptionId";
+    public List<QuestionAnswers> getAllQuestionAnswersOfTestDescription(TestDescription testDescription) {
+        String queryString = "SELECT td.questionAnswersRelations FROM TestDescription td " +
+                "WHERE td.testDescriptionId = :idTestDescription" ;
         TypedQuery<QuestionAnswers> namedQuery = em.createQuery(queryString, QuestionAnswers.class);
-        namedQuery.setParameter("testDescriptionId", testDescription.getTestDescriptionId());
+        namedQuery.setParameter("idTestDescription", testDescription.getTestDescriptionId());
         return namedQuery.getResultList();
     }
 
     @Override
-    public List<TestDescription> getAllTestDescriptionForQuestionAnswers(QuestionAnswers questionAnswers) {
-        String queryString = "SELECT DISTINCT td FROM TestDescription td " +
-                "INNER JOIN td.questionAnswersRelations qar"+
-                "WHERE qa.questionAnswersId = :questionAnswersId";
+    public List<TestDescription> getAllTestDescriptionOfQuestionAnswers(QuestionAnswers questionAnswers) {
+        String queryString = "SELECT qa.testDescriptionRelations FROM QuestionAnswers qa " +
+                "WHERE qa.questionAnswersId = :questionAnswersId" ;
         TypedQuery<TestDescription> namedQuery = em.createQuery(queryString, TestDescription.class);
         namedQuery.setParameter("questionAnswersId", questionAnswers.getQuestionAnswersId());
         return namedQuery.getResultList();

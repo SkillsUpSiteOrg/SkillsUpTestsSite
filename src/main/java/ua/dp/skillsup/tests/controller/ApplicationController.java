@@ -9,6 +9,7 @@ import ua.dp.skillsup.tests.service.ApplicationService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Daniel on 19.12.2014.
@@ -50,28 +51,33 @@ public class ApplicationController {
         return "{\"some\" : \"Successfully added new test "+testDescription.getTestName()+"\"}";
     }
 
-    @RequestMapping(value = "/addNewQuestionAnswersByTestDescriptionId", method = RequestMethod.POST)
-    public @ResponseBody String addNewQuestionAnswersByTestDescriptionId(
-            @RequestParam(value = "question", required = true) String question,
-            @RequestParam(value = "testDescriptionId", required = true) long testDescriptionId) {
+    @RequestMapping(value = "/addRelationByTestDescriptionIdAndQuestionAnswersId", method = RequestMethod.POST)
+    public @ResponseBody String addQuestionAnswersRelation(
+            @RequestParam(value = "testDescriptionId", required = true) long testDescriptionId,
+            @RequestParam(value = "questionAnswersId", required = true) long questionAnswersId) {
+            //todo
 
-        TestDescription testDescription = service.getTestDescription(testDescriptionId);
-
-        QuestionAnswers questionAnswers = new QuestionAnswers();
-        questionAnswers.setQuestion(question);
-
-        service.addQuestionAnswers(questionAnswers);
-        return "{\"id\" : "+questionAnswers.getQuestionAnswersId()+"\"}";
+        return "in process";
     }
 
-    @RequestMapping(value = "/addNewAnswerByQuestionAnswersId", method = RequestMethod.POST)
-    public @ResponseBody String addNewAnswerByQuestionAnswersId(
+    @RequestMapping(value = "/setAnswersByQuestionAnswersId", method = RequestMethod.POST)
+    public @ResponseBody String addRelationByTestDescriptionIdAndQuestionAnswersId(
+            @RequestParam(value = "questionAnswersId", required = true) long questionAnswersId,
+            @RequestParam(value = "testDescriptionId", required = true) long testDescriptionId) {
+            //todo
+
+        return "in process";
+    }
+
+    @RequestMapping(value = "/addNewQuestionAnswers", method = RequestMethod.POST)
+    public @ResponseBody String addNewQuestionAnswers(
             @RequestParam(value = "question", required = true) String question,
-            @RequestParam(value = "testDescriptionId", required = true) int testDescriptionId) {
+            @RequestParam(value = "answers", required = true) Map<String, Boolean> answers) {
         QuestionAnswers questionAnswers = new QuestionAnswers();
         questionAnswers.setQuestion(question);
+        questionAnswers.setAnswers(answers);
 
-        service.addQuestionAnswers(questionAnswers);
+        questionAnswers = service.addQuestionAnswers(questionAnswers);
         return "{\"id\" : "+questionAnswers.getQuestionAnswersId()+"\"}";
     }
 

@@ -1,6 +1,8 @@
 package ua.dp.skillsup.tests.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.joda.time.DateTime;
@@ -104,7 +106,7 @@ public class TestDescription {
                 '}';
     }
 
-    /*@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -129,5 +131,5 @@ public class TestDescription {
                 append(maxTimeToPassInMinutes).
                 append(questionAnswersRelations).
                 toHashCode();
-    }*/
+    }
 }

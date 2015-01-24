@@ -21,6 +21,6 @@ public interface ApplicationDAO {
     void updateQuestionAnswers(long id, QuestionAnswers questionAnswers);
     List<QuestionAnswers> getAllQuestionAnswers();
 
-    public List<QuestionAnswers> getAllQuestionAnswersForTestDescription(TestDescription testDescription);
-    public List<TestDescription> getAllTestDescriptionForQuestionAnswers(QuestionAnswers questionAnswers);
+    public List<QuestionAnswers> getAllQuestionAnswersOfTestDescription(TestDescription testDescription);
+    public List<TestDescription> getAllTestDescriptionOfQuestionAnswers(QuestionAnswers questionAnswers);
 }
