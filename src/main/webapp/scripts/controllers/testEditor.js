@@ -69,4 +69,8 @@ angular.module('SkillsUpTests')
             console.log($scope.newQuestion.answers);
         };
 
+        $scope.addQuestionToTest = function(){
+            console.log($scope.selectedAllQuestions);
+        }
+
     });

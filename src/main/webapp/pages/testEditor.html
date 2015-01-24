@@ -1,5 +1,3 @@
-
-
 <div class="container">
     <h2>Editing selected test</h2>
     <!-- TestDescriptions input -->
@@ -38,11 +36,11 @@
     <div  class="col-xs-12">
         <h4>Add new question to test:</h4>
         <select class="col-xs-10" multiple ng-multiple="true"
-                ng-model="allQuestions"
+                ng-model="selectedAllQuestions"
                 ng-options="question for question in allQuestions">
             <!--<option ng-repeat="question in questionsOfTest">{{question}}</option>-->
         </select>
-        <button class="btn btn-default col-xs-2" ng-click="addQuestionToTest()">Add to test>></button>
+        <button class="btn btn-default col-xs-2" ng-click="addQuestionToTest()">Add to test&gt;&gt;</button>
     </div>
     <br>
     <div class="col-xs-12">
@@ -51,6 +49,7 @@
         <br>
         <br>
         <div class="form-group" data-ng-repeat="answer in newQuestion.answers">
+            <!-- todo //use $index from ng repeat to create several variables-->
             <input class="col-xs-10" type="text" placeholder="Enter the answer" ng-model="newQuestion.answers.answerText">
             <input class="col-xs-1" type="checkbox" ng-model="newQuestion.answers.answerCorrect">Correct
         </div>
