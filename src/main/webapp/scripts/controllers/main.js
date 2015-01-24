@@ -3,7 +3,7 @@
 */
 
 angular.module('SkillsUpTests')
-  .controller('MainCtrl',function ($scope, localStorageService, $http, $location) {
+  .controller('MainCtrl',function ($rootScope, $scope, localStorageService, $http, $location) {
     var host = $location.absUrl().substr(0, $location.absUrl().lastIndexOf("#"));
 
     $scope.getAllTests = function () {
@@ -17,8 +17,10 @@ angular.module('SkillsUpTests')
 
     $scope.setSelected = function(index) {
         $scope.selected = this.test;
+        $rootScope.testForEdit = $scope.selected;
         $scope.index = index;
         console.log($scope.selected);
+        //console.log($scope.index);
     };
 
     $scope.addNewTest = function() {
@@ -39,7 +41,8 @@ angular.module('SkillsUpTests')
     };
 
     $scope.editSelectedTest = function(){
-        window.location = 'pages/editTest.html';
+        //console.log($scope.selected);
+        $location.path('testEditor');
     };
 
   });

@@ -37,10 +37,6 @@ public class Application {
         questionAnswers.addAnswers("ans4", false);
             System.out.println(questionAnswers.toString());
         test1.addQuestionAnswersRelations(questionAnswers);
-/*
-        test1.setQuestionAnswersRelations(Lists.newArrayList(questionAnswers));
-*/
-
 
         TestDescription test_1 = dao.addTestDescription(test1);
             System.out.println(test_1.getQuestionAnswersRelations());
@@ -59,17 +55,25 @@ public class Application {
 
         TestDescription test_11 = dao.addTestDescription(test_1);
         List<QuestionAnswers> listQuestionAnswers1 = test_11.getQuestionAnswersRelations();
-        /*List<QuestionAnswers> listQuestionAnswers2 = dao.getAllQuestionAnswersForTestDescription(test_11);*/
-            System.out.println(listQuestionAnswers1.toString());
-            /*System.out.println(listQuestionAnswers2.toString());*/
+        System.out.println(listQuestionAnswers1.toString());
 
 
-            System.out.println(dao.getAllTestDescriptions().get(0).getQuestionAnswersRelations());
-        /*System.out.println(dao.getTestDescription(2));*/
+        System.out.println(dao.getAllTestDescriptions().get(0).getQuestionAnswersRelations());
 
         System.out.println(dao.getAllQuestionAnswers());
         System.out.println(dao.getQuestionAnswers(1));
         System.out.println(dao.getQuestionAnswers(2));
 
+        TestDescription test2 = new TestDescription();
+        test2.setTestName("Java-1");
+        test2.setMaxTimeToPassInMinutes(60);
+
+        TestDescription test3 = new TestDescription();
+        test3.setTestName("Java-2");
+        test3.setMaxTimeToPassInMinutes(120);
+
+        dao.addTestDescription(test1);
+        dao.addTestDescription(test2);
+        dao.addTestDescription(test3);
     }
 }

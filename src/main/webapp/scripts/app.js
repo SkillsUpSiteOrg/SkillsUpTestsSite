@@ -34,9 +34,9 @@ angular
         templateUrl: 'pages/creator.html',
         controller: 'CreatorCtrl'
       })
-        .when('/editTest', {
-            templateUrl: 'pages/editTest.html',
-            controller: 'EditTestCtrl'
+        .when('/testEditor', {
+            templateUrl: 'pages/testEditor.html',
+            controller: 'TestEditorCtrl'
         })
       .otherwise({
         redirectTo: '/'
