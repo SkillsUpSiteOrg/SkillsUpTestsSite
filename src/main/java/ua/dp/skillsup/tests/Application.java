@@ -21,57 +21,47 @@ import java.util.List;
 public class Application {
 
     public static void main(String[] args) {
+        Application application = new Application();
         ApplicationContext context = SpringApplication.run(Application.class, args);
-        //Just to test
         ApplicationDAO dao = context.getBean("applicationDao", ApplicationDAO.class);
+        //Initializing data to test Application
+        application.initialize(context, dao);
+        for (TestDescription test : dao.getAllTestDescriptions()){
+            System.out.println("--------------------------------------------------------");
+            System.out.println(test);
+            System.out.println(test.getQuestionAnswersRelations());
+        }
+    }
 
+    public void initialize(ApplicationContext context, ApplicationDAO dao){
+        //Creating new tests
         TestDescription test1 = new TestDescription();
         test1.setTestName("Java-0");
         test1.setMaxTimeToPassInMinutes(90);
-
-        QuestionAnswers questionAnswers = new QuestionAnswers();
-        questionAnswers.setQuestion("How it working....?");
-        questionAnswers.addAnswers("ans1", false);
-        questionAnswers.addAnswers("ans2", false);
-        questionAnswers.addAnswers("ans3", true);
-        questionAnswers.addAnswers("ans4", false);
-            System.out.println(questionAnswers.toString());
-        test1.addQuestionAnswersRelations(questionAnswers);
-
-        TestDescription test_1 = dao.addTestDescription(test1);
-            System.out.println(test_1.getQuestionAnswersRelations());
-
-        QuestionAnswers questionAnswers_1 = new QuestionAnswers();
-        questionAnswers_1.setQuestion("Why it working....?");
-        questionAnswers_1.addAnswers("ans1", true);
-        questionAnswers_1.addAnswers("ans2", false);
-        questionAnswers_1.addAnswers("ans3", false);
-        questionAnswers_1.addAnswers("ans4", true);
-            System.out.println(questionAnswers_1);
-        questionAnswers_1.addTestDescriptionRelations(test_1);
-        QuestionAnswers questionAnswers_11 = dao.addQuestionAnswers(questionAnswers_1);
-            System.out.println(questionAnswers_11);
-
-
-        TestDescription test_11 = dao.addTestDescription(test_1);
-        List<QuestionAnswers> listQuestionAnswers1 = test_11.getQuestionAnswersRelations();
-        System.out.println(listQuestionAnswers1.toString());
-
-
-        System.out.println(dao.getAllTestDescriptions().get(0).getQuestionAnswersRelations());
-
-        System.out.println(dao.getAllQuestionAnswers());
-        System.out.println(dao.getQuestionAnswers(1));
-        System.out.println(dao.getQuestionAnswers(2));
-
         TestDescription test2 = new TestDescription();
         test2.setTestName("Java-1");
         test2.setMaxTimeToPassInMinutes(60);
-
         TestDescription test3 = new TestDescription();
         test3.setTestName("Java-2");
         test3.setMaxTimeToPassInMinutes(120);
-
+        //Creating new questions
+        QuestionAnswers question1 = new QuestionAnswers();
+        question1.setQuestion("How is it working....?");
+        question1.addAnswers("ans1", false);
+        question1.addAnswers("ans2", false);
+        question1.addAnswers("ans3", true);
+        question1.addAnswers("ans4", false);
+        QuestionAnswers question2 = new QuestionAnswers();
+        question2.setQuestion("Why is it working....?");
+        question2.addAnswers("ans1", true);
+        question2.addAnswers("ans2", false);
+        question2.addAnswers("ans3", false);
+        question2.addAnswers("ans4", true);
+        //Adding questions to test
+        test1.addQuestionAnswersRelations(question1);
+        test1.addQuestionAnswersRelations(question2);
+        test2.addQuestionAnswersRelations(question2);
+        //Adding test to DB
         dao.addTestDescription(test1);
         dao.addTestDescription(test2);
         dao.addTestDescription(test3);
