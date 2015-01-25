@@ -1,22 +1,30 @@
 package ua.dp.skillsup.tests.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
  * Created by Daniel on 16.12.2014.
  */
+/*@Proxy(lazy=false)*/
 @Entity
 @Table(name = "TEST_DESCRIPTION")
 public class TestDescription {
 
     public TestDescription(){
         this.dateOfCreation = new Date();
+        this.questionAnswersRelations = new ArrayList<QuestionAnswers>();
     }
 
     @Id
@@ -32,6 +40,30 @@ public class TestDescription {
 
     @Column(name = "TIME_IN_MINUTES")
     private int maxTimeToPassInMinutes;
+
+    /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade={CascadeType.ALL})
+    @Fetch(FetchMode.JOIN)
+    @JsonManagedReference
+    private List<QuestionAnswers> questionAnswersRelations;
+
+    public List<QuestionAnswers> getQuestionAnswersRelations() {
+        return questionAnswersRelations;
+    }
+
+    public void setQuestionAnswersRelations(List<QuestionAnswers> questionAnswersRelations) {
+        this.questionAnswersRelations = questionAnswersRelations;
+        for (QuestionAnswers questionAnswersRelation : questionAnswersRelations) {
+            questionAnswersRelation.addTestDescriptionRelations(this);
+        }
+    }
+
+    public void addQuestionAnswersRelations(QuestionAnswers questionAnswers) {
+        questionAnswersRelations.add(questionAnswers);
+        questionAnswers.addTestDescriptionRelations(this);
+    }
+    /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
     public long getTestDescriptionId() {
         return testDescriptionId;
@@ -87,6 +119,7 @@ public class TestDescription {
                 .append(testDescriptionId, that.testDescriptionId)
                 .append(dateOfCreation, that.dateOfCreation)
                 .append(testName, that.testName)
+                .append(questionAnswersRelations, that.questionAnswersRelations)
                 .isEquals();
     }
 
@@ -97,6 +130,7 @@ public class TestDescription {
                 append(testName).
                 append(dateOfCreation).
                 append(maxTimeToPassInMinutes).
+                append(questionAnswersRelations).
                 toHashCode();
     }
 }

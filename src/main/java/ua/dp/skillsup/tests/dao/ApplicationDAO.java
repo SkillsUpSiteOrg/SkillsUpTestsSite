@@ -1,5 +1,6 @@
 package ua.dp.skillsup.tests.dao;
 
+import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
 import java.util.List;
@@ -13,4 +14,13 @@ public interface ApplicationDAO {
     TestDescription getTestDescription(long id);
     void updateTestDescription(long id, TestDescription testDescription);
     List<TestDescription> getAllTestDescriptions();
+
+    QuestionAnswers addQuestionAnswers(QuestionAnswers questionAnswers);
+    void deleteQuestionAnswers(QuestionAnswers questionAnswers);
+    QuestionAnswers getQuestionAnswers(long id);
+    void updateQuestionAnswers(long id, QuestionAnswers questionAnswers);
+    List<QuestionAnswers> getAllQuestionAnswers();
+
+    public List<QuestionAnswers> getAllQuestionAnswersOfTestDescription(TestDescription testDescription);
+    public List<TestDescription> getAllTestDescriptionOfQuestionAnswers(QuestionAnswers questionAnswers);
 }
