@@ -109,6 +109,7 @@ public class ApplicationController {
         return testDescription;
     }
 
+    //Method returning just a stub for testing UI.
     @RequestMapping(value = "/getQuestionAnswersOfTest", method = RequestMethod.POST)
     public @ResponseBody List<String> getQuestionAnswersOfTest(
             @RequestParam(value = "testDescriptionId", required = true) long testDescriptionId){
@@ -121,6 +122,7 @@ public class ApplicationController {
         return list;
     }
 
+    //Method returning just a stub for testing UI.
     @RequestMapping(value = "/getAllQuestionAnswers", method = RequestMethod.GET)
     public @ResponseBody List<String> getAllQuestionAnswers(){
         //List<String> allQuestionAnswers = service.getAllQuestionAnswers();

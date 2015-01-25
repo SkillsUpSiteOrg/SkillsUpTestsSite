@@ -38,6 +38,10 @@ angular
             templateUrl: 'pages/testEditor.html',
             controller: 'TestEditorCtrl'
         })
+        .when('/passTest', {
+          templateUrl: 'pages/passTest.html',
+          controller: 'PassTestCtrl'
+        })
       .otherwise({
         redirectTo: '/'
       });

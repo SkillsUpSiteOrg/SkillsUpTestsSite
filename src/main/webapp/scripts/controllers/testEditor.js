@@ -2,13 +2,14 @@
 angular.module('SkillsUpTests')
     .controller('TestEditorCtrl',function ($rootScope, $scope, localStorageService, $http, $location) {
         var host = $location.absUrl().substr(0, $location.absUrl().lastIndexOf("#"));
-        //console.log($rootScope.testForEdit);
         $scope.selectedTest = $rootScope.testForEdit;
-        //console.log($scope.selectedTest);
+        $scope.oldTestName = $rootScope.testForEdit.testName;
+        $scope.oldMaxTimeToPassInMinutes = $rootScope.testForEdit.maxTimeToPassInMinutes;
         $http({
             method: 'POST',
             url: host+'getQuestionAnswersOfTest',
-            data: $.param({"testDescriptionId":$scope.selectedTest.testDescriptionId}),
+            data: $.param({"testName":$scope.selectedTest.testName,
+                "maxTimeToPassInMinutes":$scope.selectedTest.maxTimeToPassInMinutes}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
             .success(function(data) {
@@ -36,7 +37,7 @@ angular.module('SkillsUpTests')
             $http({
                 method: 'POST',
                 url: host+'deleteQuestionAnswersFromTest',
-                data: $.param({"questionAnswerId":$scope.selectedExistingQuestion.questionAnswerId}),
+                data: $.param({"question":$scope.selectedExistingQuestion.question}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
         };
@@ -45,17 +46,19 @@ angular.module('SkillsUpTests')
             //console.log($scope.selected);
             console.log($scope.selectedTest.testName);
             console.log($scope.selectedTest.maxTimeToPassInMinutes);
-
-            /*$http({
+            $http({
                 method: 'POST',
                 url: host+'editTestDescription',
-                data: $.param({"testName":$scope.testName, "maxTimeToPassInMinutes":$scope.maxTimeToPassInMinutes}),
+                data: $.param({"testName":$scope.selectedTest.testName,
+                    "maxTimeToPassInMinutes":$scope.selectedTest.maxTimeToPassInMinutes,
+                    "oldTestName":$scope.oldTestName,
+                    "oldMaxTimeToPassInMinutes":$scope.oldMaxTimeToPassInMinutes}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
                 .success(function(data) {
                     $scope.message = data;
                     console.log($scope.message);
-                });*/
+                });
         };
 
         $scope.newQuestion = {text: '', answers: []};
@@ -67,10 +70,33 @@ angular.module('SkillsUpTests')
         $scope.addNewQuestionToTest = function(){
             console.log($scope.newQuestion);
             console.log($scope.newQuestion.answers);
+            $http({
+                method: 'POST',
+                url: host+'addNewQuestionToTest',
+                data: $.param({"testName":$scope.selectedTest.testName,
+                    "question":$scope.newQuestion.text,
+                    "answers":$scope.newQuestion.answers}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+                .success(function(data) {
+                    $scope.message = data;
+                    console.log($scope.message);
+                });
         };
 
-        $scope.addQuestionToTest = function(){
+        $scope.addExistingQuestionsToTest = function(){
             console.log($scope.selectedAllQuestions);
+            $http({
+                method: 'POST',
+                url: host+'addExistingQuestionsToTest',
+                data: $.param({"testName":$scope.selectedTest.testName,
+                    "questions":$scope.selectedAllQuestions}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+                .success(function(data) {
+                    $scope.message = data;
+                    console.log($scope.message);
+                });
         }
 
     });

@@ -38,9 +38,8 @@
         <select class="col-xs-10" multiple ng-multiple="true"
                 ng-model="selectedAllQuestions"
                 ng-options="question for question in allQuestions">
-            <!--<option ng-repeat="question in questionsOfTest">{{question}}</option>-->
         </select>
-        <button class="btn btn-default col-xs-2" ng-click="addQuestionToTest()">Add to test&gt;&gt;</button>
+        <button class="btn btn-default col-xs-2" ng-click="addExistingQuestionsToTest()">Add to test&gt;&gt;</button>
     </div>
     <br>
     <div class="col-xs-12">
@@ -49,12 +48,14 @@
         <br>
         <br>
         <div class="form-group" data-ng-repeat="answer in newQuestion.answers">
-            <!-- todo //use $index from ng repeat to create several variables-->
-            <input class="col-xs-10" type="text" placeholder="Enter the answer" ng-model="newQuestion.answers.answerText">
-            <input class="col-xs-1" type="checkbox" ng-model="newQuestion.answers.answerCorrect">Correct
+            <input class="col-xs-10" type="text" placeholder="Enter the answer" ng-model="answer.answerText">
+            <input class="col-xs-1" type="checkbox" ng-model="answer.answerCorrect">Correct
         </div>
-        <button class="btn btn-default col-xs-2" ng-click="addNewAnswer()">Add new answer>></button>
-        <br>
-        <button class="btn btn-small btn-primary" ng-click="addNewQuestionToTest()">Add new question to test</button>
+        <button class="btn btn-default" ng-click="addNewAnswer()">Add new answer&gt;&gt;</button>
+        <div>
+            <br>
+            <button class="btn btn-small btn-primary" ng-click="addNewQuestionToTest()">Add new question to test</button>
+        </div>
+
     </div>
 </div>

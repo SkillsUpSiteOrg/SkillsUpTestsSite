@@ -45,4 +45,22 @@ angular.module('SkillsUpTests')
         $location.path('testEditor');
     };
 
+    $scope.passSelectedTest = function(){
+        //console.log($scope.selected);
+        $location.path('passTest');
+    };
+
+    $scope.removeSelectedTest = function(){
+        $http({
+            method: 'POST',
+            url: host+'removeSelectedTest',
+            data: $.param({"testName":$scope.selected.testName}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function(data) {
+                $scope.message = data;
+                console.log($scope.message);
+            });
+    }
+
   });

@@ -32,7 +32,9 @@
             <td>{{test.dateOfCreation | date:'dd-MM-yyyy HH:mm:ss'}}</td>
         </tr></tbody>
     </table>
+
+    <button class="btn btn-small btn-primary" ng-click="passSelectedTest()">Apply on test</button>
     <button class="btn btn-small btn-primary" ng-click="editSelectedTest()">Edit selected test</button>
-    <button class="btn btn-small btn-danger">X</button>
+    <button class="btn btn-small btn-danger" ng-click="removeSelectedTest()">X</button>
 </div>
 
