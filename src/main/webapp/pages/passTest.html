@@ -1,0 +1,21 @@
+<div class="container">
+    <h2>Sign in</h2>
+    <div class="form-group">
+        <label for="usr">Name:</label>
+        <input ng-model="login" type="text" class="form-control" placeholder="Login" id="usr">
+        <label for="pwd">Password:</label>
+        <input ng-model="password" type="password" class="form-control" placeholder="Password" id="pwd">
+    </div>
+    <hr>
+    <div ng-model="questionsOfTest" ng-repeat="question in questionsOfTest">
+        <h4>{{question.question}}</h4>
+        <div ng-repeat="answer in question.answers">
+            <p class="col-xs-10">{{answer.answer}}</p>
+            <input class="col-xs-1" class="col-xs-1" type="checkbox" ng-model="answer.correct">Correct
+            <hr>
+        </div>
+        <button class="btn btn-default" ng-click="saveAnswer()">Answer</button>
+    </div>
+
+
+</div>

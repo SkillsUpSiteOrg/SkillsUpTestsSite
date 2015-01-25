@@ -112,9 +112,10 @@ public class ApplicationController {
     //Method returning just a stub for testing UI.
     @RequestMapping(value = "/getQuestionAnswersOfTest", method = RequestMethod.POST)
     public @ResponseBody List<String> getQuestionAnswersOfTest(
-            @RequestParam(value = "testDescriptionId", required = true) long testDescriptionId){
-        TestDescription testDescription = service.getTestDescription(testDescriptionId);
-        System.out.println(testDescription.getTestName());
+            @RequestParam(value = "testName", required = true) String testName,
+            @RequestParam(value = "maxTimeToPassInMinutes", required = true) int maxTimeToPassInMinutes){
+        //TestDescription testDescription = service.getTestDescription(testDescriptionId);
+        //System.out.println(testDescription.getTestName());
         List<String> list = new ArrayList<String>();
         list.add("Question1");
         list.add("Question2");

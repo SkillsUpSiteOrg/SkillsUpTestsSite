@@ -59,6 +59,7 @@ angular.module('SkillsUpTests')
                     $scope.message = data;
                     console.log($scope.message);
                 });
+            $location.path('/main');
         };
 
         $scope.newQuestion = {text: '', answers: []};
@@ -70,6 +71,7 @@ angular.module('SkillsUpTests')
         $scope.addNewQuestionToTest = function(){
             console.log($scope.newQuestion);
             console.log($scope.newQuestion.answers);
+            $location.path('testEditor');
             $http({
                 method: 'POST',
                 url: host+'addNewQuestionToTest',
@@ -82,6 +84,7 @@ angular.module('SkillsUpTests')
                     $scope.message = data;
                     console.log($scope.message);
                 });
+            $scope.newQuestion = {text: '', answers: []};
         };
 
         $scope.addExistingQuestionsToTest = function(){
