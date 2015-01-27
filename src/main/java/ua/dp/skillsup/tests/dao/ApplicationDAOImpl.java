@@ -7,7 +7,7 @@ import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -123,9 +123,10 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     @Override
     public List<QuestionAnswers> getAllQuestionAnswersOfTestDescription(TestDescription testDescription) {
         String queryString = "SELECT td.questionAnswersRelations FROM TestDescription td " +
-                "WHERE td.testDescriptionId = :idTestDescription" ;
-        TypedQuery<QuestionAnswers> namedQuery = em.createQuery(queryString, QuestionAnswers.class);
-        namedQuery.setParameter("idTestDescription", testDescription.getTestDescriptionId());
+                "WHERE td.testDescriptionId = :testDescriptionId";
+        long testDescriptionId = testDescription.getTestDescriptionId();
+        Query namedQuery = em.createQuery(queryString);
+        namedQuery.setParameter("testDescriptionId", testDescriptionId);
         return namedQuery.getResultList();
     }
 

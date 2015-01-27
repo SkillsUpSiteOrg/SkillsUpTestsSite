@@ -80,7 +80,9 @@ public class ApplicationController {
     @RequestMapping(value = "/getQuestionAnswersOfTest", method = RequestMethod.POST)
     public @ResponseBody List<QuestionAnswers> getQuestionAnswersOfTest(
             @RequestParam(value = "testName", required = true) String testName) {
-        return service.getAllQuestionAnswersOfTestDescription(service.getTestDescription(testName));
+        TestDescription testDescription = service.getTestDescription(testName);
+        List<QuestionAnswers> questionAnswerses = service.getAllQuestionAnswersOfTestDescription(testDescription);
+        return questionAnswerses;
     }
 
     @RequestMapping(value = "/removeSelectedTest", method = RequestMethod.POST)

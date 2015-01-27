@@ -15,9 +15,8 @@
     <table class="table table-striped" ng-table="existingQuestionsOfTest">
         <thead>
             <tr>
-                <th data-field="questionAnswerId" data-align="right">ID</th>
+                <th data-field="questionAnswerId" data-align="right">№</th>
                 <th data-field="question" data-align="left">Question</th>
-                <th data-field="testDescriptions" data-align="left">Used in tests</th>
                 <th data-align="center">Remove from test</th>
             </tr>
         </thead>
@@ -25,9 +24,8 @@
             <tr ng-repeat="question in questionsOfTest" style="padding:5px 10px; cursor: move;"
                 ng-click="setSelectedExistingQuestion($indexOfSelectedExistingQuestion)"
                 ng-class="{'info':$indexOfSelectedExistingQuestion == indexOfSelectedExistingQuestion}">
-                <!--<td>{{question.questionAnswerId}}</td>-->
-                <td>{{question}}</td>
-                <!--<td>{{question.testDescriptions}}</td>-->
+                <td>{{$index}}</td>
+                <td>{{question.question}}</td>
                 <td><button class="btn btn-small btn-danger" ng-click="removeSelectedExistinqQuestion()">X</button></td>
             </tr>
         </tbody>
