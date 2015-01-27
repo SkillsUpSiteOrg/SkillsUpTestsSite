@@ -47,7 +47,7 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     @Override
     public void updateTestDescription(long id, TestDescription testDescription){
         TestDescription newTest = getTestDescription(id);
-        System.out.println(newTest);
+        //System.out.println(newTest);
         if(newTest != null){
             if (getTestDescription(id).equals(newTest)){
                 newTest.setTestName(testDescription.getTestName());
@@ -97,9 +97,9 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
     @Override
     public void updateQuestionAnswers(long id, QuestionAnswers questionAnswers) {
-        QuestionAnswers newQuestionAnswers =em.find(QuestionAnswers.class, id);
+        QuestionAnswers newQuestionAnswers = getQuestionAnswers(id); /*em.find(QuestionAnswers.class, id)*/
         if( newQuestionAnswers!= null){
-            if (!em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId()).equals(newQuestionAnswers)){
+            if (getQuestionAnswers(id).equals(newQuestionAnswers)){
                 newQuestionAnswers.setQuestion(questionAnswers.getQuestion());
                 newQuestionAnswers.setAnswers(questionAnswers.getAnswers());
                 newQuestionAnswers.setTestDescriptionRelations(questionAnswers.getTestDescriptionRelations());

@@ -22,8 +22,7 @@
         </thead>
         <tbody ui-sortable ng-model="questionsOfTest">
             <tr ng-repeat="question in questionsOfTest" style="padding:5px 10px; cursor: move;"
-                ng-click="setSelectedExistingQuestion($indexOfSelectedExistingQuestion)"
-                ng-class="{'info':$indexOfSelectedExistingQuestion == indexOfSelectedExistingQuestion}">
+                ng-click="setSelectedExistingQuestion($index)" ng-class="{'info':$index == index}">
                 <td>{{$index}}</td>
                 <td>{{question.question}}</td>
                 <td><button class="btn btn-small btn-danger" ng-click="removeSelectedExistinqQuestion()">X</button></td>
@@ -36,7 +35,7 @@
         <h4>Add new question to test:</h4>
         <select class="col-xs-10" multiple ng-multiple="true"
                 ng-model="selectedAllQuestions"
-                ng-options="question for question in allQuestions">
+                ng-options="question.question for question in allQuestions">
         </select>
         <button class="btn btn-default col-xs-2" ng-click="addExistingQuestionsToTest()">Add to test&gt;&gt;</button>
     </div>

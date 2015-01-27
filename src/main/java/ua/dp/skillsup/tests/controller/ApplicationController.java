@@ -7,6 +7,7 @@ import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 import ua.dp.skillsup.tests.service.ApplicationService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,28 +113,33 @@ public class ApplicationController {
 
     @RequestMapping(value = "/addNewQuestionAnswers", method = RequestMethod.POST)
     public @ResponseBody String addNewQuestionAnswers(
+            @RequestParam(value = "testName", required = true) String testDescriptionRelation,
             @RequestParam(value = "question", required = true) String question,
-            @RequestParam(value = "answers", required = true) Map<String, Boolean> answers,
-            @RequestParam(value = "testDescriptionRelations", required = false) List<String> testDescriptionRelations) {
+            @RequestParam(value = "answers", required = true) String answers) {
+        String[] answersArray = answers.split("},");
+        Map<String, Boolean> answersMap = new HashMap<>();
+        for (String answer : answersArray){
+            String answerText = answer.substring(answer.indexOf("\"answerText\":\"")+14, answer.indexOf("\",\"answerCorrect"));
+            String answerCorrectString = answer.substring(answer.indexOf("\"answerCorrect\":")+16, answer.indexOf(",\"$$hashKey"));
+            boolean answerCorrect = Boolean.parseBoolean(answerCorrectString);
+            answersMap.put(answerText, answerCorrect);
+        }
         QuestionAnswers questionAnswers = new QuestionAnswers();
         questionAnswers.setQuestion(question);
-        questionAnswers.setAnswers(answers);
+        questionAnswers.setAnswers(answersMap);
         questionAnswers = service.addQuestionAnswers(questionAnswers);
-        for(String testName : testDescriptionRelations){
-            questionAnswers.addTestDescriptionRelation(service.getTestDescription(testName));
-        }
+        questionAnswers.addTestDescriptionRelation(service.getTestDescription(testDescriptionRelation));
         service.updateQuestionAnswers(questionAnswers.getQuestionAnswersId(), questionAnswers);
         return "{\"state\" : \"Successfully added new question "+questionAnswers.getQuestion()+"\"}";
     }
 
     @RequestMapping(value = "/addRelationForTestAndQuestion", method = RequestMethod.POST)
-    public @ResponseBody String addQuestionAnswersRelation(
+    public @ResponseBody void addQuestionAnswersRelation(
             @RequestParam(value = "testName", required = true) String testName,
             @RequestParam(value = "question", required = true) String question) {
         TestDescription testDescription = service.getTestDescription(testName);
         testDescription.addQuestionAnswersRelation(service.getQuestionAnswers(question));
         service.updateTestDescription(testDescription.getTestDescriptionId(), testDescription);
-        return "done";
     }
 
     @RequestMapping(value = "/setAnswersByQuestion", method = RequestMethod.POST)

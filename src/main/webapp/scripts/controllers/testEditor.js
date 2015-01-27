@@ -26,20 +26,27 @@ angular.module('SkillsUpTests')
                 console.log($scope.allQuestions);
             });
 
-        $scope.setSelectedExistingQuestion = function(indexOfSelectedExistingQuestion) {
+        $scope.setSelectedExistingQuestion = function(index) {
             $scope.selectedExistingQuestion = this.question;
-            $scope.indexOfSelectedExistingQuestion = indexOfSelectedExistingQuestion;
-            console.log($scope.selectedExistingQuestion);
+            $scope.index = index;
+            //console.log($scope.selectedExistingQuestion);
             //console.log($scope.index);
         };
 
         $scope.removeSelectedExistinqQuestion = function(){
+            console.log($scope.selectedExistingQuestion);
+            //$location.path('testEditor');
             $http({
                 method: 'POST',
                 url: host+'deleteQuestionAnswersFromTest',
-                data: $.param({"question":$scope.selectedExistingQuestion.question}),
+                data: $.param({"question":$scope.selectedExistingQuestion.question,
+                "testName":$scope.selectedTest.testName}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function(data) {
+                $scope.message = data;
+                console.log($scope.message);
             });
+            $location.path('/testEditor');
         };
 
         $scope.editTest = function () {
@@ -65,19 +72,20 @@ angular.module('SkillsUpTests')
         $scope.newQuestion = {text: '', answers: []};
         $scope.addNewAnswer = function() {
             var newAnswerNo = $scope.newQuestion.answers.length + 1;
-            $scope.newQuestion.answers.push({number: newAnswerNo, answerText: '', answerCorrect: ''});
+            $scope.newQuestion.answers.push({number: newAnswerNo, answerText: '', answerCorrect: false});
         };
 
         $scope.addNewQuestionToTest = function(){
-            console.log($scope.newQuestion);
-            console.log($scope.newQuestion.answers);
+            console.log($scope.selectedTest.testName);
+            console.log($scope.newQuestion.text);
+            console.log(JSON.stringify($scope.newQuestion.answers));
             $location.path('testEditor');
             $http({
                 method: 'POST',
-                url: host+'addNewQuestionToTest',
+                url: host+'addNewQuestionAnswers',
                 data: $.param({"testName":$scope.selectedTest.testName,
                     "question":$scope.newQuestion.text,
-                    "answers":$scope.newQuestion.answers}),
+                    "answers": JSON.stringify($scope.newQuestion.answers)}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
                 .success(function(data) {
@@ -89,17 +97,21 @@ angular.module('SkillsUpTests')
 
         $scope.addExistingQuestionsToTest = function(){
             console.log($scope.selectedAllQuestions);
-            $http({
-                method: 'POST',
-                url: host+'addExistingQuestionsToTest',
-                data: $.param({"testName":$scope.selectedTest.testName,
-                    "questions":$scope.selectedAllQuestions}),
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            })
-                .success(function(data) {
-                    $scope.message = data;
-                    console.log($scope.message);
-                });
+            angular.forEach($scope.selectedAllQuestions, function(questionValue, questionKey){
+                    if(questionKey = "question"){
+                        //console.log("key: " + questionKey);
+                        //console.log("value: " + questionValue.question);
+                        $http({
+                            method: 'POST',
+                            url: host+'addRelationForTestAndQuestion',
+                            data: $.param({"testName":$scope.selectedTest.testName,
+                                "question":questionValue.question}),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                        })
+                    }
+                }
+
+            );
         }
 
     });
