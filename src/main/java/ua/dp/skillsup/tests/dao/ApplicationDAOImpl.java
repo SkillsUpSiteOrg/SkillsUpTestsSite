@@ -46,9 +46,10 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
     @Override
     public void updateTestDescription(long id, TestDescription testDescription){
-        TestDescription newTest = em.find(TestDescription.class, id);
+        TestDescription newTest = getTestDescription(id);
+        System.out.println(newTest);
         if(newTest != null){
-            if (!em.find(TestDescription.class, testDescription.getTestDescriptionId()).equals(newTest)){
+            if (getTestDescription(id).equals(newTest)){
                 newTest.setTestName(testDescription.getTestName());
                 newTest.setMaxTimeToPassInMinutes(testDescription.getMaxTimeToPassInMinutes());
                 newTest.setQuestionAnswersRelations(testDescription.getQuestionAnswersRelations());
