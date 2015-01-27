@@ -1,5 +1,5 @@
 angular.module('SkillsUpTests')
-    .controller('PassTestCtrl',function ($rootScope, $scope, localStorageService, $http, $location) {
+    .controller('PassTestCtrl',function ($rootScope, $scope, localStorageService, $http, $location, $timeout) {
         var host = $location.absUrl().substr(0, $location.absUrl().lastIndexOf("#"));
         $scope.selectedTest = $rootScope.testForEdit;
         /*$http({
@@ -23,6 +23,17 @@ angular.module('SkillsUpTests')
 
         $scope.saveAnswer = function(){
             $scope.userAnswers.push({answer: '', correct: ''});
+        }
+
+        $scope.counter = $scope.selectedTest.maxTimeToPassInMinutes;
+        $scope.onTimeout = function(){
+            $scope.counter--;
+            mytimeout = $timeout($scope.onTimeout,60000);
+        }
+        var mytimeout = $timeout($scope.onTimeout,60000);
+
+        $scope.stop = function(){
+            $timeout.cancel(mytimeout);
         }
 
     });
