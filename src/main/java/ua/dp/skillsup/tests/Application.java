@@ -11,8 +11,6 @@ import ua.dp.skillsup.tests.dao.ApplicationDAO;
 import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 
-import java.util.List;
-
 @Configuration
 @EnableWebMvc
 @EnableAutoConfiguration
@@ -26,11 +24,26 @@ public class Application {
         ApplicationDAO dao = context.getBean("applicationDao", ApplicationDAO.class);
         //Initializing data to test Application
         application.initialize(context, dao);
-        for (TestDescription test : dao.getAllTestDescriptions()){
-            System.out.println("--------------------------------------------------------");
-            System.out.println(test);
-            System.out.println(test.getQuestionAnswersRelations());
+        application.getStateDB(context, dao);
+    }
+
+    public void getStateDB(ApplicationContext context, ApplicationDAO dao){
+        System.out.println("-----------------------------getAllTestDescriptions----------------------------------");
+        for (TestDescription testDescription : dao.getAllTestDescriptions()) {
+            System.out.println(testDescription.getTestDescriptionId()+" - testDescription ("+testDescription.getTestName()+") => Relations:");
+            for (QuestionAnswers questionAnswers : testDescription.getQuestionAnswersRelations()) {
+                System.out.println("|->"+questionAnswers);
+            }
         }
+        System.out.println("------------------------------getAllQuestionAnswers---------------------------------");
+        for (QuestionAnswers questionAnswers : dao.getAllQuestionAnswers()) {
+            System.out.println(questionAnswers.getQuestionAnswersId()+" - questionAnswers ("+questionAnswers.getQuestion()+") => Relations:");
+            for (TestDescription testDescription : questionAnswers.getTestDescriptionRelations()) {
+                System.out.println("|->"+testDescription);
+            }
+        }
+        System.out.println("-------------------------------------------------------------------------------------");
+
     }
 
     public void initialize(ApplicationContext context, ApplicationDAO dao){
@@ -58,9 +71,9 @@ public class Application {
         question2.addAnswers("ans3", false);
         question2.addAnswers("ans4", true);
         //Adding questions to test
-        test1.addQuestionAnswersRelations(question1);
-        test1.addQuestionAnswersRelations(question2);
-        test2.addQuestionAnswersRelations(question2);
+        test1.addQuestionAnswersRelation(question1);
+        test1.addQuestionAnswersRelation(question2);
+        test2.addQuestionAnswersRelation(question2);
         //Adding test to DB
         dao.addTestDescription(test1);
         dao.addTestDescription(test2);
