@@ -1,6 +1,6 @@
 package ua.dp.skillsup.tests.dao.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -28,6 +28,7 @@ public class TestDescription {
     }
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private long testDescriptionId;
@@ -41,8 +42,8 @@ public class TestDescription {
     @Column(name = "TIME_IN_MINUTES")
     private int maxTimeToPassInMinutes;
 
-    /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-    @ManyToMany(fetch = FetchType.EAGER,
+    @ManyToMany(
+            fetch = FetchType.EAGER,
             cascade={CascadeType.ALL})
     @Fetch(FetchMode.JOIN)
     @JsonManagedReference
@@ -53,17 +54,36 @@ public class TestDescription {
     }
 
     public void setQuestionAnswersRelations(List<QuestionAnswers> questionAnswersRelations) {
-        this.questionAnswersRelations = questionAnswersRelations;
-        for (QuestionAnswers questionAnswersRelation : questionAnswersRelations) {
-            questionAnswersRelation.addTestDescriptionRelations(this);
+        if (this.questionAnswersRelations != questionAnswersRelations){
+            if (!this.getQuestionAnswersRelations().isEmpty()){
+                this.getQuestionAnswersRelations().clear();
+            }
+            for (QuestionAnswers questionAnswers:questionAnswersRelations){
+                questionAnswers.addTestDescriptionRelation(this);
+            }
+        }
+        else {
+            System.out.println("relations fot this testDescription equals gets "+this.getTestDescriptionId());
         }
     }
 
-    public void addQuestionAnswersRelations(QuestionAnswers questionAnswers) {
-        questionAnswersRelations.add(questionAnswers);
-        questionAnswers.addTestDescriptionRelations(this);
+    public void addQuestionAnswersRelation(QuestionAnswers questionAnswers) {
+        if (!this.getQuestionAnswersRelations().contains(questionAnswers)){
+            this.questionAnswersRelations.add(questionAnswers);
+            if (!questionAnswers.getTestDescriptionRelations().contains(this)){
+                questionAnswers.internalAddTestDescriptionRelation(this);
+            }
+        }
     }
-    /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+    public void removeQuestionAnswersRelation(QuestionAnswers questionAnswers) {
+        if (this.getQuestionAnswersRelations().contains(questionAnswers)){
+            if (questionAnswers.getTestDescriptionRelations().contains(this)){
+                questionAnswers.internalRemoveTestDescriptionRelation(this);
+            }
+            this.questionAnswersRelations.remove(questionAnswers);
+        }
+    }
 
     public long getTestDescriptionId() {
         return testDescriptionId;
@@ -104,6 +124,7 @@ public class TestDescription {
                 ", Name='" + testName + '\'' +
                 ", Date of creation=" + dateOfCreation +
                 ", Max time to pass=" + maxTimeToPassInMinutes +
+                /*", Used with questionAnswers=" + questionAnswersRelations +*/
                 '}';
     }
 

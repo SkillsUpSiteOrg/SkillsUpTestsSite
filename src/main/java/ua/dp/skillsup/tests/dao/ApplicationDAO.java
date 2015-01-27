@@ -18,6 +18,8 @@ public interface ApplicationDAO {
     QuestionAnswers addQuestionAnswers(QuestionAnswers questionAnswers);
     void deleteQuestionAnswers(QuestionAnswers questionAnswers);
     QuestionAnswers getQuestionAnswers(long id);
+    TestDescription getTestDescription(String testName);
+    QuestionAnswers getQuestionAnswers(String question);
     void updateQuestionAnswers(long id, QuestionAnswers questionAnswers);
     List<QuestionAnswers> getAllQuestionAnswers();
 

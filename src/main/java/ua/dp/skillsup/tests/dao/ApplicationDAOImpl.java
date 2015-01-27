@@ -1,6 +1,5 @@
 package ua.dp.skillsup.tests.dao;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
@@ -19,12 +18,19 @@ import java.util.List;
 @Transactional
 public class ApplicationDAOImpl implements ApplicationDAO {
 
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext/*(type = PersistenceContextType.EXTENDED)*/
     public EntityManager em;
 
     @Override
     public TestDescription addTestDescription(TestDescription testDescription){
-        return em.merge(testDescription);
+        TestDescription existingTestDescription = em.find(TestDescription.class, testDescription.getTestDescriptionId());
+        if (existingTestDescription == null){
+            em.persist(testDescription);
+            return testDescription;
+        }
+        else {
+            return em.merge(testDescription);
+        }
     }
 
     @Override
@@ -40,12 +46,17 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
     @Override
     public void updateTestDescription(long id, TestDescription testDescription){
-        TestDescription newTest;
-        if(em.find(TestDescription.class, id) != null){
-            newTest = em.find(TestDescription.class, testDescription.getTestDescriptionId());
-            newTest.setTestName(testDescription.getTestName());
-            newTest.setMaxTimeToPassInMinutes(testDescription.getMaxTimeToPassInMinutes());
-            em.merge(newTest);
+        TestDescription newTest = em.find(TestDescription.class, id);
+        if(newTest != null){
+            if (!em.find(TestDescription.class, testDescription.getTestDescriptionId()).equals(newTest)){
+                newTest.setTestName(testDescription.getTestName());
+                newTest.setMaxTimeToPassInMinutes(testDescription.getMaxTimeToPassInMinutes());
+                newTest.setQuestionAnswersRelations(testDescription.getQuestionAnswersRelations());
+                em.merge(newTest);
+            }
+            else {
+                System.out.println("There is no such entity in data base. Check the class TestDescription.");
+            }
         }
         else{
             System.out.println("There is no such entity in data base. Check the id.");
@@ -60,17 +71,22 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
     @Override
     public QuestionAnswers addQuestionAnswers(QuestionAnswers questionAnswers) {
-        return em.merge(questionAnswers);
+        QuestionAnswers existingQuestionAnswers = em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId());
+        if (existingQuestionAnswers == null){
+            em.persist(questionAnswers);
+            return questionAnswers;
+        }
+        else {
+            return em.merge(questionAnswers);
+        }
     }
 
     @Override
     public void deleteQuestionAnswers(QuestionAnswers questionAnswers) {
         questionAnswers = this.em.merge(questionAnswers);
         this.em.remove(questionAnswers);
-
         /*QuestionAnswers questionAnswers_ = this.em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId());
         this.em.remove(questionAnswers_);*/
-
     }
 
     @Override
@@ -80,13 +96,17 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
     @Override
     public void updateQuestionAnswers(long id, QuestionAnswers questionAnswers) {
-        QuestionAnswers newQuestionAnswers;
-        if(em.find(QuestionAnswers.class, id) != null){
-            newQuestionAnswers = em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId());
-            newQuestionAnswers.setQuestion(questionAnswers.getQuestion());
-            newQuestionAnswers.setAnswers(questionAnswers.getAnswers());
-            newQuestionAnswers.setTestDescriptionRelations(questionAnswers.getTestDescriptionRelations());
-            em.merge(newQuestionAnswers);
+        QuestionAnswers newQuestionAnswers =em.find(QuestionAnswers.class, id);
+        if( newQuestionAnswers!= null){
+            if (!em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId()).equals(newQuestionAnswers)){
+                newQuestionAnswers.setQuestion(questionAnswers.getQuestion());
+                newQuestionAnswers.setAnswers(questionAnswers.getAnswers());
+                newQuestionAnswers.setTestDescriptionRelations(questionAnswers.getTestDescriptionRelations());
+                em.merge(newQuestionAnswers);
+            }
+            else {
+                System.out.println("There is no such entity in data base. Check the class QuestionAnswers.");
+            }
         }
         else{
             System.out.println("There is no such entity in data base. Check the id.");
@@ -115,5 +135,23 @@ public class ApplicationDAOImpl implements ApplicationDAO {
         TypedQuery<TestDescription> namedQuery = em.createQuery(queryString, TestDescription.class);
         namedQuery.setParameter("questionAnswersId", questionAnswers.getQuestionAnswersId());
         return namedQuery.getResultList();
+    }
+
+    @Override
+    public QuestionAnswers getQuestionAnswers(String question) {
+        String queryString = "SELECT qa FROM QuestionAnswers qa " +
+                "WHERE qa.question = :question" ;
+        TypedQuery<QuestionAnswers> namedQuery = em.createQuery(queryString, QuestionAnswers.class);
+        namedQuery.setParameter("question", question);
+        return namedQuery.getSingleResult();
+    }
+
+    @Override
+    public TestDescription getTestDescription(String testName) {
+        String queryString = "SELECT td FROM TestDescription td " +
+                "WHERE td.testName = :testName" ;
+        TypedQuery<TestDescription> namedQuery = em.createQuery(queryString, TestDescription.class);
+        namedQuery.setParameter("testName", testName);
+        return namedQuery.getSingleResult();
     }
 }

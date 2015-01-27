@@ -1,15 +1,15 @@
 package ua.dp.skillsup.tests.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Daniel on 26.12.2014.
@@ -25,6 +25,7 @@ public class QuestionAnswers {
     }
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private long questionAnswersId;
@@ -33,8 +34,14 @@ public class QuestionAnswers {
     private String question;
 
     @Column(name = "ANSWERS")
+    @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     private Map<String, Boolean> answers;
+
+    @JsonInclude
+    public Set<String> getAnswersText() {
+        return answers.keySet();
+    }
 
     @ManyToMany(mappedBy = "questionAnswersRelations",
             fetch = FetchType.EAGER,
@@ -42,6 +49,40 @@ public class QuestionAnswers {
     @Fetch(FetchMode.JOIN)
     @JsonBackReference
     private List<TestDescription> testDescriptionRelations;
+
+    public List<TestDescription> getTestDescriptionRelations() {
+        return testDescriptionRelations;
+    }
+
+    public void setTestDescriptionRelations(List<TestDescription> testDescriptionRelations) {
+        if (this.testDescriptionRelations != testDescriptionRelations){
+            if (!this.getTestDescriptionRelations().isEmpty()){
+                this.getTestDescriptionRelations().clear();
+            }
+            for (TestDescription testDescriptionRelation : testDescriptionRelations) {
+                testDescriptionRelation.addQuestionAnswersRelation(this);
+            }
+        }
+        else {
+            System.out.println("relations for this questionAnswers equals gets "+this.getQuestionAnswersId());
+        }
+    }
+
+    public void addTestDescriptionRelation(TestDescription testDescription) {
+        testDescription.addQuestionAnswersRelation(this);
+    }
+
+    public void removeTestDescriptionRelation(TestDescription testDescription) {
+        testDescription.removeQuestionAnswersRelation(this);
+    }
+
+    public void internalAddTestDescriptionRelation(TestDescription testDescription) {
+        this.testDescriptionRelations.add(testDescription);
+    }
+
+    public void internalRemoveTestDescriptionRelation(TestDescription testDescription) {
+        this.testDescriptionRelations.remove(testDescription);
+    }
 
     public long getQuestionAnswersId() {
         return questionAnswersId;
@@ -67,18 +108,14 @@ public class QuestionAnswers {
         this.answers = answer;
     }
 
-    public List<TestDescription> getTestDescriptionRelations() {
-        return testDescriptionRelations;
-    }
-
-    public void setTestDescriptionRelations(List<TestDescription> testDescriptionRelations) {
-        this.testDescriptionRelations = testDescriptionRelations;
+    public void addAnswers(String answer, boolean correct) {
+        answers.put(answer, correct);
     }
 
     @Override
     public String toString() {
         return "QuestionAnswers{" +
-                "questionAnswersId=" + questionAnswersId +
+                "Id=" + questionAnswersId +
                 ", question='" + question + '\'' +
                 ", answers='" + answers + '\'' +
                 ", used in tests=" + testDescriptionRelations +
@@ -92,29 +129,21 @@ public class QuestionAnswers {
 
         QuestionAnswers that = (QuestionAnswers) o;
 
-        if (questionAnswersId != that.questionAnswersId) return false;
-        if (answers != null ? !answers.equals(that.answers) : that.answers != null) return false;
-        if (question != null ? !question.equals(that.question) : that.question != null) return false;
-        if (testDescriptionRelations != null ? !testDescriptionRelations.equals(that.testDescriptionRelations) : that.testDescriptionRelations != null)
-            return false;
-
-        return true;
+        return new EqualsBuilder()
+                .append(questionAnswersId, that.questionAnswersId)
+                .append(answers, that.answers)
+                .append(question, that.question)
+                .append(testDescriptionRelations, that.testDescriptionRelations)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (questionAnswersId ^ (questionAnswersId >>> 32));
-        result = 31 * result + (question != null ? question.hashCode() : 0);
-        result = 31 * result + (answers != null ? answers.hashCode() : 0);
-        result = 31 * result + (testDescriptionRelations != null ? testDescriptionRelations.hashCode() : 0);
-        return result;
-    }
-
-    public void addAnswers(String answer, boolean correct) {
-        answers.put(answer, correct);
-    }
-
-    public void addTestDescriptionRelations(TestDescription testDescription) {
-        testDescriptionRelations.add(testDescription);
+        return new HashCodeBuilder(17, 37).
+                append(questionAnswersId).
+                append(question).
+                append(answers).
+                append(testDescriptionRelations).
+                toHashCode();
     }
 }

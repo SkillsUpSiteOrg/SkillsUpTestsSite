@@ -30,7 +30,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public TestDescription addTestDescription(TestDescription testDescription) {
         return dao.addTestDescription(testDescription);
-        //second line
     }
 
     @Override
@@ -60,7 +59,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void deleteQuestionAnswers(QuestionAnswers questionAnswers) {
-
+        dao.deleteQuestionAnswers(questionAnswers);
     }
 
     @Override
@@ -69,8 +68,18 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void updateQuestionAnswers(long id, QuestionAnswers questionAnswers) {
+    public TestDescription getTestDescription(String testName) {
+        return dao.getTestDescription(testName);
+    }
 
+    @Override
+    public QuestionAnswers getQuestionAnswers(String question) {
+        return dao.getQuestionAnswers(question);
+    }
+
+    @Override
+    public void updateQuestionAnswers(long id, QuestionAnswers questionAnswers) {
+        dao.updateQuestionAnswers(id, questionAnswers);
     }
 
     @Override
