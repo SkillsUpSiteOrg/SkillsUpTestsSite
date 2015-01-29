@@ -93,7 +93,6 @@ public class ApplicationController {
         return "{\"state\" : \"Successfully delete test "+testName+"\"}";
     }
 
-
     /*For testing on the future*/
     @RequestMapping(value = "/addNewTestDescription", method = RequestMethod.POST)
     public @ResponseBody String addNewTestDescription(
@@ -104,10 +103,12 @@ public class ApplicationController {
         testDescription.setTestName(testName);
         testDescription.setMaxTimeToPassInMinutes(maxTimeToPassInMinutes);
         testDescription = service.addTestDescription(testDescription);
-        for(String question : questionAnswersRelations){
-            testDescription.addQuestionAnswersRelation(service.getQuestionAnswers(question));
+        if(questionAnswersRelations != null){
+            for(String question : questionAnswersRelations){
+                testDescription.addQuestionAnswersRelation(service.getQuestionAnswers(question));
+            }
+            service.updateTestDescription(testDescription.getTestDescriptionId(),testDescription);
         }
-        service.updateTestDescription(testDescription.getTestDescriptionId(),testDescription);
         return "{\"state\" : \"Successfully added new test "+testDescription.getTestName()+"\"}";
     }
 
@@ -173,8 +174,12 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/getResultOfPassedTest", method = RequestMethod.POST)
-    public @ResponseBody double getResultOfPassedTest(
-            @RequestParam(value = "userAnswers", required = true) String userAnswers) {
+    public @ResponseBody int getResultOfPassedTest(
+            @RequestParam(value = "userAnswers", required = true) String userAnswers,
+            @RequestParam(value = "testName", required = true) String testName,
+            @RequestParam(value = "login", required = true) String login,
+            @RequestParam(value = "password", required = true) String password
+            ) {
         String[] userAnswersArray = userAnswers.split("\"question\":\"");
         Map<String, Map<String, Boolean>> mapOfUserQuestionsAnswers = new HashMap<>();
         for(String questionAnswer : userAnswersArray){
@@ -196,6 +201,9 @@ public class ApplicationController {
             }
         }
         //TODO Have to use mapOfUserQuestionsAnswers in service method to count user's result
+        System.out.println(testName);
+        System.out.println(login);
+        System.out.println(password);
         System.out.println(mapOfUserQuestionsAnswers);
         return 0;
     }

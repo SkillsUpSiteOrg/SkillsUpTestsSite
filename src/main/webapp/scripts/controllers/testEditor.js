@@ -29,13 +29,12 @@ angular.module('SkillsUpTests')
         $scope.setSelectedExistingQuestion = function(index) {
             $scope.selectedExistingQuestion = this.question;
             $scope.index = index;
-            //console.log($scope.selectedExistingQuestion);
-            //console.log($scope.index);
         };
 
-        $scope.removeSelectedExistinqQuestion = function(){
-            console.log($scope.selectedExistingQuestion);
-            //$location.path('testEditor');
+        $scope.removeSelectedExistinqQuestion = function(index){
+            $scope.selectedExistingQuestion = this.question;
+            $scope.index = index;
+            $scope.questionsOfTest.splice(index, 1);
             $http({
                 method: 'POST',
                 url: host+'deleteQuestionAnswersFromTest',
@@ -97,10 +96,13 @@ angular.module('SkillsUpTests')
 
         $scope.addExistingQuestionsToTest = function(){
             console.log($scope.selectedAllQuestions);
+            angular.forEach($scope.selectedAllQuestions, function(selectedQuestion){
+                if($scope.questionsOfTest.indexOf(selectedQuestion)==-1){
+                    $scope.questionsOfTest.push(selectedQuestion);
+                }
+            });
             angular.forEach($scope.selectedAllQuestions, function(questionValue, questionKey){
                     if(questionKey = "question"){
-                        //console.log("key: " + questionKey);
-                        //console.log("value: " + questionValue.question);
                         $http({
                             method: 'POST',
                             url: host+'addRelationForTestAndQuestion',

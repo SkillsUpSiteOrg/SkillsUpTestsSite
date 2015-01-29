@@ -48,7 +48,12 @@ angular.module('SkillsUpTests')
             $http({
                 method: 'POST',
                 url: host+'getResultOfPassedTest',
-                data: $.param({"userAnswers": JSON.stringify($scope.userAnswers)}),
+                data: $.param({
+                    "userAnswers": JSON.stringify($scope.userAnswers),
+                    "testName": $scope.selectedTest.testName,
+                    "login": $scope.userLogin,
+                    "password": $scope.userPassword
+                }),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
         }
