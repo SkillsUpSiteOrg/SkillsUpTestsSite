@@ -20,8 +20,7 @@ angular.module('SkillsUpTests')
             method: 'GET',
             url: host+'getAllQuestionAnswers',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-            .success(function(data) {
+        }).success(function(data) {
                 $scope.allQuestions = data;
                 console.log($scope.allQuestions);
             });
@@ -86,23 +85,53 @@ angular.module('SkillsUpTests')
                     "question":$scope.newQuestion.text,
                     "answers": JSON.stringify($scope.newQuestion.answers)}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            })
-                .success(function(data) {
-                    $scope.message = data;
-                    console.log($scope.message);
-                });
+            }).success(function(){
+                $http({
+                    method: 'POST',
+                    url: host+'getQuestionAnswersOfTest',
+                    data: $.param({"testName":$scope.selectedTest.testName,
+                        "maxTimeToPassInMinutes":$scope.selectedTest.maxTimeToPassInMinutes}),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).success(function(data) {
+                    $scope.questionsOfTest = data;
+                    console.log($scope.questionsOfTest);
+                    $http({
+                        method: 'GET',
+                        url: host+'getAllQuestionAnswers',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).success(function(data) {
+                        $scope.allQuestions = data;
+                        console.log($scope.allQuestions);
+                    });
+                })
+            });
             $scope.newQuestion = {text: '', answers: []};
         };
 
         $scope.addExistingQuestionsToTest = function(){
             console.log($scope.selectedAllQuestions);
-            angular.forEach($scope.selectedAllQuestions, function(selectedQuestion){
-                if($scope.questionsOfTest.indexOf(selectedQuestion)==-1){
-                    $scope.questionsOfTest.push(selectedQuestion);
-                }
-            });
-            angular.forEach($scope.selectedAllQuestions, function(questionValue, questionKey){
+            $http({
+                method: 'POST',
+                url: host+'addRelationForTestAndQuestion',
+                data: $.param({"testName":$scope.selectedTest.testName,
+                    "questions": JSON.stringify($scope.selectedAllQuestions)}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function(){
+                $http({
+                    method: 'POST',
+                    url: host+'getQuestionAnswersOfTest',
+                    data: $.param({"testName":$scope.selectedTest.testName,
+                        "maxTimeToPassInMinutes":$scope.selectedTest.maxTimeToPassInMinutes}),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).success(function(data) {
+                    $scope.questionsOfTest = data;
+                    console.log($scope.questionsOfTest);
+                });
+            })
+            //TODO This code left here for descendants to show how stuff shouldn't be done
+            /*angular.forEach($scope.selectedAllQuestions, function(questionValue, questionKey){
                     if(questionKey = "question"){
+                        console.log(questionValue);
                         $http({
                             method: 'POST',
                             url: host+'addRelationForTestAndQuestion',
@@ -112,8 +141,7 @@ angular.module('SkillsUpTests')
                         })
                     }
                 }
-
-            );
+            );*/
         }
 
     });

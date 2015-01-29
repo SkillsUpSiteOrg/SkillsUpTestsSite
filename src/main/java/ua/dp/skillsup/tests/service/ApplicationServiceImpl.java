@@ -68,13 +68,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public TestDescription getTestDescription(String testName) {
-        return dao.getTestDescription(testName);
+    public TestDescription getTestDescriptionByName(String testName) {
+        return dao.getTestDescriptionByName(testName);
     }
 
     @Override
-    public QuestionAnswers getQuestionAnswers(String question) {
-        return dao.getQuestionAnswers(question);
+    public QuestionAnswers getQuestionAnswersByQuestion(String question) {
+        return dao.getQuestionAnswersByQuestion(question);
     }
 
     @Override
