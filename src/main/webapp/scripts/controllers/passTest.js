@@ -1,28 +1,31 @@
 angular.module('SkillsUpTests')
-    .controller('PassTestCtrl',function ($rootScope, $scope, localStorageService, $http, $location, $timeout) {
+    .controller('PassTestCtrl',function ($rootScope, $scope, localStorageService, $http, $location, $timeout, $resource) {
         var host = $location.absUrl().substr(0, $location.absUrl().lastIndexOf("#"));
         $scope.selectedTest = $rootScope.testForEdit;
-        /*$http({
+        $http({
             method: 'POST',
             url: host+'getQuestionAnswersOfTest',
             data: $.param({"testName":$scope.selectedTest.testName,
                 "maxTimeToPassInMinutes":$scope.selectedTest.maxTimeToPassInMinutes}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-            .success(function(data) {
+        }).success(function(data) {
                 $scope.questionsOfTest = data;
                 console.log($scope.questionsOfTest);
-            });*/
-        $scope.questionsOfTest = [{question: '', answers: [{answer: '', correct:''}]}];
-        $scope.questionsOfTest[0].answers.push({answer: 'ans1', correct:''});
-        $scope.questionsOfTest[0].answers.push({answer: 'ans2', correct:''});
-        $scope.questionsOfTest[0].answers.push({answer: 'ans3', correct:''});
-        $scope.questionsOfTest[0].question = "qeustion1???";
-        console.log($scope.questionsOfTest);
-        $scope.userAnswers=[];
+                $scope.initUserAnswers();
+            });
 
-        $scope.saveAnswer = function(){
-            $scope.userAnswers.push({answer: '', correct: ''});
+        $scope.initUserAnswers = function(){
+            $scope.userAnswers=[];
+            angular.forEach($scope.questionsOfTest, function(questionValue, questionKey){
+                    var variantsOfAnswer = [];
+                    angular.forEach(questionValue.answersText, function(answerValue, answerKey){
+                        variantsOfAnswer.push({variantOfAnswer: answerValue, correct: false});
+                    })
+                    $scope.userAnswers.push({question: questionValue.question, variantsOfAnswer: variantsOfAnswer});
+                }
+
+            );
+            console.log($scope.userAnswers);
         }
 
         $scope.counter = $scope.selectedTest.maxTimeToPassInMinutes;
@@ -34,6 +37,20 @@ angular.module('SkillsUpTests')
 
         $scope.stop = function(){
             $timeout.cancel(mytimeout);
+        }
+
+        $scope.finishTest = function(){
+            console.log($scope.userAnswers);
+            /*var testResult = $resource(host+'getResultOfPassedTest', {}, {saveData: {method:'POST', isArray: true}});
+            $scope.doSubmit = function() {
+                testResult.saveData($scope.userAnswers);
+            }*/
+            $http({
+                method: 'POST',
+                url: host+'getResultOfPassedTest',
+                data: $.param({"userAnswers": JSON.stringify($scope.userAnswers)}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
         }
 
     });

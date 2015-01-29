@@ -10,14 +10,13 @@
         <h3>Passing {{selectedTest.testName}} test. Time left: {{counter}} minutes</h3>
         <hr>
     </div>
-    <div class="col-xs-12" ng-model="questionsOfTest" ng-repeat="question in questionsOfTest">
+    <div class="col-xs-12" ng-model="userAnswers" ng-repeat="question in userAnswers">
         <h4>{{$index+1}}. {{question.question}}</h4>
-        <div ng-repeat="answer in question.answers">
-            <p class="col-xs-10">{{$index+1}}) {{answer.answer}}</p>
+        <div ng-repeat="answer in question.variantsOfAnswer">
+            <p class="col-xs-10">{{$index+1}}) {{answer.variantOfAnswer}}</p>
             <input class="col-xs-1" class="col-xs-1" type="checkbox" ng-model="answer.correct">Correct
             <hr>
         </div>
-        <button class="btn btn-default" ng-click="saveAnswer()">Answer</button>
     </div>
     <div class="col-xs-12">
         <br>

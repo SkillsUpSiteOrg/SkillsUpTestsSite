@@ -59,21 +59,27 @@ public class Application {
         test3.setMaxTimeToPassInMinutes(120);
         //Creating new questions
         QuestionAnswers question1 = new QuestionAnswers();
-        question1.setQuestion("How is it working....?");
-        question1.addAnswers("ans1", false);
-        question1.addAnswers("ans2", false);
-        question1.addAnswers("ans3", true);
-        question1.addAnswers("ans4", false);
+        question1.setQuestion("What are main three words?");
+        question1.addAnswers("Inheritance", true);
+        question1.addAnswers("Encapsulation", true);
+        question1.addAnswers("Polymorphism", true);
+        question1.addAnswers("Abstraction", false);
         QuestionAnswers question2 = new QuestionAnswers();
-        question2.setQuestion("Why is it working....?");
-        question2.addAnswers("ans1", true);
-        question2.addAnswers("ans2", false);
-        question2.addAnswers("ans3", false);
-        question2.addAnswers("ans4", true);
+        question2.setQuestion("What collection doesn't extend Collection interface?");
+        question2.addAnswers("Set", false);
+        question2.addAnswers("List", false);
+        question2.addAnswers("Map", true);
+        question2.addAnswers("Queue", false);
+        QuestionAnswers question3 = new QuestionAnswers();
+        question3.setQuestion("Does the new file creates if run this code: File file = new File('path');?");
+        question3.addAnswers("Yes", false);
+        question3.addAnswers("No", true);
         //Adding questions to test
         test1.addQuestionAnswersRelation(question1);
         test1.addQuestionAnswersRelation(question2);
+        test1.addQuestionAnswersRelation(question3);
         test2.addQuestionAnswersRelation(question2);
+        test3.addQuestionAnswersRelation(question3);
         //Adding test to DB
         dao.addTestDescription(test1);
         dao.addTestDescription(test2);

@@ -171,4 +171,33 @@ public class ApplicationController {
     public @ResponseBody QuestionAnswers getQuestionAnswers(@PathVariable String question) {
         return service.getQuestionAnswers(question);
     }
+
+    @RequestMapping(value = "/getResultOfPassedTest", method = RequestMethod.POST)
+    public @ResponseBody double getResultOfPassedTest(
+            @RequestParam(value = "userAnswers", required = true) String userAnswers) {
+        String[] userAnswersArray = userAnswers.split("\"question\":\"");
+        Map<String, Map<String, Boolean>> mapOfUserQuestionsAnswers = new HashMap<>();
+        for(String questionAnswer : userAnswersArray){
+            String question = "";
+            Map<String, Boolean> mapOfAnswers = new HashMap<>();
+            if(questionAnswer.length()>2){
+                question = questionAnswer.substring(0, questionAnswer.indexOf("\",\"variantsOfAnswer"));
+                String variantsOfAnswer = questionAnswer.substring(questionAnswer.indexOf("\"variantsOfAnswer\":")+21);
+                String[] answersArray = variantsOfAnswer.split("\"variantOfAnswer\":\"");
+                for(String answer : answersArray){
+                    if(answer.length()>1){
+                        String variant = answer.substring(0, answer.indexOf("\",\"correct\""));
+                        String variantCorrect = answer.substring(answer.indexOf("\",\"correct\":")+12);
+                        String correct = variantCorrect.substring(0, variantCorrect.indexOf(","));
+                        mapOfAnswers.put(variant, Boolean.parseBoolean(correct));
+                    }
+                }
+                mapOfUserQuestionsAnswers.put(question, mapOfAnswers);
+            }
+        }
+        //TODO Have to use mapOfUserQuestionsAnswers in service method to count user's result
+        System.out.println(mapOfUserQuestionsAnswers);
+        return 0;
+    }
+
 }

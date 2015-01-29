@@ -23,7 +23,7 @@
         <tbody ui-sortable ng-model="questionsOfTest">
             <tr ng-repeat="question in questionsOfTest" style="padding:5px 10px; cursor: move;"
                 ng-click="setSelectedExistingQuestion($index)" ng-class="{'info':$index == index}">
-                <td>{{$index}}</td>
+                <td>{{$index + 1}}</td>
                 <td>{{question.question}}</td>
                 <td><button class="btn btn-small btn-danger" ng-click="removeSelectedExistinqQuestion()">X</button></td>
             </tr>
