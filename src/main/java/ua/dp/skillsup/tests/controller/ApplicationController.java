@@ -8,6 +8,7 @@ import ua.dp.skillsup.tests.dao.entity.TestDescription;
 import ua.dp.skillsup.tests.dao.entity.UserResults;
 import ua.dp.skillsup.tests.service.ApplicationService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class ApplicationController {
         QuestionAnswers questionAnswers = new QuestionAnswers();
         questionAnswers.setQuestion(question);
         questionAnswers.setAnswers(answers);
-        questionAnswers.addTestDescriptionRelation(service.getTestDescription(testName));
+        questionAnswers.addTestDescriptionRelation(service.getTestDescriptionByName(testName));
         questionAnswers = service.addQuestionAnswers(questionAnswers);
         return "{\"state\" : \"Successfully added new question "+questionAnswers.getQuestion()+"\"}";
     }
@@ -64,7 +65,7 @@ public class ApplicationController {
             @RequestParam(value = "maxTimeToPassInMinutes", required = true) int maxTimeToPassInMinutes,
             @RequestParam(value = "oldTestName", required = true) String oldTestName,
             @RequestParam(value = "oldMaxTimeToPassInMinutes", required = false) int oldMaxTimeToPassInMinutes) {
-        TestDescription oldTestDescription = service.getTestDescription(oldTestName);
+        TestDescription oldTestDescription = service.getTestDescriptionByName(oldTestName);
         oldTestDescription.setTestName(testName);
         oldTestDescription.setMaxTimeToPassInMinutes(maxTimeToPassInMinutes);
         service.updateTestDescription(oldTestDescription.getTestDescriptionId(), oldTestDescription);
@@ -74,15 +75,15 @@ public class ApplicationController {
     public @ResponseBody void deleteQuestionAnswersFromTest(
             @RequestParam(value = "question", required = true) String question,
             @RequestParam(value = "testName", required = true) String testName) {
-        TestDescription testDescription = service.getTestDescription(testName);
-        testDescription.removeQuestionAnswersRelation(service.getQuestionAnswers(question));
+        TestDescription testDescription = service.getTestDescriptionByName(testName);
+        testDescription.removeQuestionAnswersRelation(service.getQuestionAnswersByQuestion(question));
         service.updateTestDescription(testDescription.getTestDescriptionId(), testDescription);
     }
 
     @RequestMapping(value = "/getQuestionAnswersOfTest", method = RequestMethod.POST)
     public @ResponseBody List<QuestionAnswers> getQuestionAnswersOfTest(
             @RequestParam(value = "testName", required = true) String testName) {
-        TestDescription testDescription = service.getTestDescription(testName);
+        TestDescription testDescription = service.getTestDescriptionByName(testName);
         List<QuestionAnswers> questionAnswerses = service.getAllQuestionAnswersOfTestDescription(testDescription);
         return questionAnswerses;
     }
@@ -90,10 +91,9 @@ public class ApplicationController {
     @RequestMapping(value = "/removeSelectedTest", method = RequestMethod.POST)
     public @ResponseBody String removeSelectedTest(
             @RequestParam(value = "testName", required = true) String testName) {
-        service.deleteTestDescription(service.getTestDescription(testName));
+        service.deleteTestDescription(service.getTestDescriptionByName(testName));
         return "{\"state\" : \"Successfully delete test "+testName+"\"}";
     }
-
 
     /*For testing on the future*/
     @RequestMapping(value = "/addNewTestDescription", method = RequestMethod.POST)
@@ -105,15 +105,17 @@ public class ApplicationController {
         testDescription.setTestName(testName);
         testDescription.setMaxTimeToPassInMinutes(maxTimeToPassInMinutes);
         testDescription = service.addTestDescription(testDescription);
-        for(String question : questionAnswersRelations){
-            testDescription.addQuestionAnswersRelation(service.getQuestionAnswers(question));
+        if(questionAnswersRelations != null){
+            for(String question : questionAnswersRelations){
+                testDescription.addQuestionAnswersRelation(service.getQuestionAnswersByQuestion(question));
+            }
+            service.updateTestDescription(testDescription.getTestDescriptionId(),testDescription);
         }
-        service.updateTestDescription(testDescription.getTestDescriptionId(),testDescription);
         return "{\"state\" : \"Successfully added new test "+testDescription.getTestName()+"\"}";
     }
 
     @RequestMapping(value = "/addNewQuestionAnswers", method = RequestMethod.POST)
-    public @ResponseBody String addNewQuestionAnswers(
+    public @ResponseBody void addNewQuestionAnswers(
             @RequestParam(value = "testName", required = true) String testDescriptionRelation,
             @RequestParam(value = "question", required = true) String question,
             @RequestParam(value = "answers", required = true) String answers) {
@@ -129,25 +131,35 @@ public class ApplicationController {
         questionAnswers.setQuestion(question);
         questionAnswers.setAnswers(answersMap);
         questionAnswers = service.addQuestionAnswers(questionAnswers);
-        questionAnswers.addTestDescriptionRelation(service.getTestDescription(testDescriptionRelation));
+        questionAnswers.addTestDescriptionRelation(service.getTestDescriptionByName(testDescriptionRelation));
         service.updateQuestionAnswers(questionAnswers.getQuestionAnswersId(), questionAnswers);
-        return "{\"state\" : \"Successfully added new question "+questionAnswers.getQuestion()+"\"}";
     }
 
     @RequestMapping(value = "/addRelationForTestAndQuestion", method = RequestMethod.POST)
     public @ResponseBody void addQuestionAnswersRelation(
             @RequestParam(value = "testName", required = true) String testName,
-            @RequestParam(value = "question", required = true) String question) {
-        TestDescription testDescription = service.getTestDescription(testName);
-        testDescription.addQuestionAnswersRelation(service.getQuestionAnswers(question));
-        service.updateTestDescription(testDescription.getTestDescriptionId(), testDescription);
+            @RequestParam(value = "questions", required = true) String questions) {
+        List<String> questionsList = new ArrayList<>();
+        String[] questionsArray = questions.split("\"question\":\"");
+        for(String question : questionsArray){
+            if(question.length()>2){
+                question = question.substring(0, question.indexOf("\",\"answersText\":["));
+                questionsList.add(question);
+            }
+        }
+        System.out.println(questionsList);
+        TestDescription testDescription = service.getTestDescriptionByName(testName);
+        for(String question : questionsList){
+            testDescription.addQuestionAnswersRelation(service.getQuestionAnswersByQuestion(question));
+            service.updateTestDescription(testDescription.getTestDescriptionId(), testDescription);
+        }
     }
 
     @RequestMapping(value = "/setAnswersByQuestion", method = RequestMethod.POST)
     public @ResponseBody String setAnswersByQuestion(
             @RequestParam(value = "question", required = true) String question,
             @RequestParam(value = "answers", required = true) Map<String, Boolean> answers) {
-        QuestionAnswers questionAnswers = service.getQuestionAnswers(question);
+        QuestionAnswers questionAnswers = service.getQuestionAnswersByQuestion(question);
         questionAnswers.setAnswers(answers);
         service.updateQuestionAnswers(questionAnswers.getQuestionAnswersId(), questionAnswers);
         return "done";
@@ -155,30 +167,31 @@ public class ApplicationController {
 
     @RequestMapping(value = "/getQuestionAnswersOfTestDescription/{testName}", method = RequestMethod.GET)
     public @ResponseBody List<QuestionAnswers> getQuestionAnswersOfTestDescription(@PathVariable String testName) {
-        return service.getAllQuestionAnswersOfTestDescription(service.getTestDescription(testName));
+        return service.getAllQuestionAnswersOfTestDescription(service.getTestDescriptionByName(testName));
     }
 
     @RequestMapping(value = "/getAllTestDescriptionByQuestionAnswers/{question}", method = RequestMethod.GET)
     public @ResponseBody List<TestDescription> getAllTestDescriptionByQuestionAnswers(@PathVariable String question) {
-        return service.getAllTestDescriptionOfQuestionAnswers(service.getQuestionAnswers(question));
+        return service.getAllTestDescriptionOfQuestionAnswers(service.getQuestionAnswersByQuestion(question));
     }
 
     @RequestMapping(value = "/getTestDescription/{testName}", method = RequestMethod.GET)
     public @ResponseBody TestDescription getTestDescription(@PathVariable String testName) {
-        return service.getTestDescription(testName);
+        return service.getTestDescriptionByName(testName);
     }
 
     @RequestMapping(value = "/getQuestionAnswers/{question}", method = RequestMethod.GET)
     public @ResponseBody QuestionAnswers getQuestionAnswers(@PathVariable String question) {
-        return service.getQuestionAnswers(question);
+        return service.getQuestionAnswersByQuestion(question);
     }
 
     @RequestMapping(value = "/getResultOfPassedTest", method = RequestMethod.POST)
     public @ResponseBody int getResultOfPassedTest(
-            @RequestParam(value = "userName", required = true) String userName,
-            @RequestParam(value = "userSecret", required = true) String userSecret,
+            @RequestParam(value = "userAnswers", required = true) String userAnswers,
             @RequestParam(value = "testName", required = true) String testName,
-            @RequestParam(value = "userAnswers", required = true) String userAnswers) {
+            @RequestParam(value = "login", required = true) String login,
+            @RequestParam(value = "password", required = true) String password
+            ) {
         String[] userAnswersArray = userAnswers.split("\"question\":\"");
         Map<String, Map<String, Boolean>> mapOfUserQuestionsAnswers = new HashMap<>();
         for(String questionAnswer : userAnswersArray){
@@ -199,8 +212,12 @@ public class ApplicationController {
                 mapOfUserQuestionsAnswers.put(question, mapOfAnswers);
             }
         }
+        //TODO Have to use mapOfUserQuestionsAnswers in service method to count user's result
+        System.out.println(testName);
+        System.out.println(login);
+        System.out.println(password);
         System.out.println(mapOfUserQuestionsAnswers);
-        return service.addNewUserResults(userName, userSecret, testName, mapOfUserQuestionsAnswers);
+        return service.addNewUserResults(login, password, testName, mapOfUserQuestionsAnswers);
     }
 
     @RequestMapping(value = "/getAllResultsOfUserBySecret", method = RequestMethod.POST)
