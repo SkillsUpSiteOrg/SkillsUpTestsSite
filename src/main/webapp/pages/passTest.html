@@ -20,7 +20,8 @@
     </div>
     <div class="col-xs-12">
         <br>
-        <button class="btn btn-small btn-primary" ng-click="finishTest()">Finish test</button>
+        <button class="btn btn-small btn-primary" ng-disabled="checked" ng-click="finishTest()">Finish test</button>
+        <input ng-model="resultOfTest"  type="text" placeholder="for your result">
     </div>
 
 

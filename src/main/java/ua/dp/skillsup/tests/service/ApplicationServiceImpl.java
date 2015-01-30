@@ -8,10 +8,7 @@ import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
 import ua.dp.skillsup.tests.dao.entity.UserResults;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Daniel on 19.12.2014.
@@ -129,44 +126,28 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (existingTestDescription != null){
             userResults.setTestName(testName);
             if (mapOfUserQuestionsAnswers != null){
-                int[] arrayQuestionsPassPercent = new int[mapOfUserQuestionsAnswers.keySet().size()];
-
+                Map<String,Integer> userQuestionResults = new HashMap<String, Integer>();
                 List<QuestionAnswers> allCorrectQuestionAnswers = existingTestDescription.getQuestionAnswersRelations();
-
                 if (allCorrectQuestionAnswers != null) {
-
-                    int i=0;
                     for (String question : mapOfUserQuestionsAnswers.keySet()){
                         QuestionAnswers currentQuestionAnswers = dao.getQuestionAnswersByQuestion(question);
                         if (currentQuestionAnswers != null) {
-                                Map<String, Boolean> userAnswers = mapOfUserQuestionsAnswers.get(question);
-                                arrayQuestionsPassPercent[i] = compareCorrectAndUserAnswers(currentQuestionAnswers.getAnswers(), userAnswers);
-                                i++;
-
-
-                                /*QuestionAnswers questionAnswersForUserAnswers = new QuestionAnswers();
-                                questionAnswersForUserAnswers.setTestDescriptionRelations(null);;
-                                questionAnswersForUserAnswers.setQuestion(question);
-                                questionAnswersForUserAnswers.setAnswers(userAnswers);
-                                allQuestionAnswersForUserAnswers.add(questionAnswersForUserAnswers);*/
+                            Map<String, Boolean> userAnswers = mapOfUserQuestionsAnswers.get(question);
+                            userQuestionResults.put(question, compareCorrectAndUserAnswers(currentQuestionAnswers.getAnswers(), userAnswers));
+                            System.out.println(userQuestionResults.get(question)+"% for Question: "+question);
                         }
                         else {
                             System.out.println("In DB no one question with text: "+question);
                         }
                     }
-                    System.out.println(allQuestionAnswersForUserAnswers);
                     int sum = 0;
-                    for (int x : arrayQuestionsPassPercent){
-                        System.out.println(x);
-                        sum += x;
-                    }
-                    averageTestPassPercent = sum/arrayQuestionsPassPercent.length;
+                    for (int x : userQuestionResults.values()){sum += x;}
+                    averageTestPassPercent = sum/userQuestionResults.values().size();
                     System.out.println("RESULT: "+averageTestPassPercent);
-                    /*userResults.setCorrectQuestionAnswerses(allCorrectQuestionAnswers);*/
-                   /* userResults.setUserQuestionAnswerses(allQuestionAnswersForUserAnswers);*/
+                    userResults.setResult(averageTestPassPercent);
+                    userResults.setUserQuestionResults(userQuestionResults);
                     System.out.println(userResults);
                     System.out.println("!!!: "+dao.addUserResults(userResults));
-
                 }
                 else {
                     System.out.println("Test " + testName + " have not any questions");

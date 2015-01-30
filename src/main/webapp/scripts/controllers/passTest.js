@@ -57,6 +57,7 @@ angular.module('SkillsUpTests')
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function(data) {
                 $scope.resultOfTest = data;
+                $scope.ch
                 console.log($scope.resultOfTest);
             });
         }

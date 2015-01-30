@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by SERG on 29.01.15.
@@ -19,8 +16,9 @@ public class UserResults {
 
     public UserResults(){
         this.dateOfPassed = new Date();
-        this.correctQuestionAnswerses = new ArrayList<QuestionAnswers>();
-        this.userQuestionAnswerses = new ArrayList<QuestionAnswers>();
+        /*this.correctQuestionAnswerses = new ArrayList<QuestionAnswers>();
+        this.userQuestionAnswerses = new ArrayList<QuestionAnswers>();*/
+        this.userQuestionResults = new HashMap<String, Integer>();
     }
 
     @Id
@@ -47,14 +45,14 @@ public class UserResults {
     private int percentOfTimeToPass;
 */
 
-    @JsonIgnore
+    /*@JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "ETALON_ANSWERS_OF_TEST")
     private List<QuestionAnswers> correctQuestionAnswerses;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "USER_ANSWERS_OF_TEST")
-    private List<QuestionAnswers> userQuestionAnswerses;
+    private List<QuestionAnswers> userQuestionAnswerses;*/
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "USER_ANSWERS_OF_TEST")
@@ -103,7 +101,7 @@ public class UserResults {
         this.dateOfPassed = dateOfPassed;
     }
 
-    public List<QuestionAnswers> getCorrectQuestionAnswerses() {
+    /*public List<QuestionAnswers> getCorrectQuestionAnswerses() {
         return correctQuestionAnswerses;
     }
 
@@ -118,7 +116,7 @@ public class UserResults {
     public void setUserQuestionAnswerses(List<QuestionAnswers> userQuestionAnswerses) {
         this.userQuestionAnswerses = userQuestionAnswerses;
     }
-
+*/
     public int getResult() {
         return result;
     }
@@ -127,12 +125,12 @@ public class UserResults {
         this.result = result;
     }
 
-    public Map<String, Integer> getUserQuestionResultss() {
+    public Map<String, Integer> getUserQuestionResults() {
         return userQuestionResults;
     }
 
-    public void setUserQuestionResultss(Map<String, Integer> userQuestionResultss) {
-        this.userQuestionResults = userQuestionResultss;
+    public void setUserQuestionResults(Map<String, Integer> userQuestionResults) {
+        this.userQuestionResults = userQuestionResults;
     }
 
     @Override
@@ -143,8 +141,7 @@ public class UserResults {
                 ", userSecret='" + userSecret + '\'' +
                 ", testName='" + testName + '\'' +
                 ", dateOfPassed=" + dateOfPassed +
-                ", correctQuestionAnswerses=" + correctQuestionAnswerses +
-                ", userQuestionAnswerses=" + userQuestionAnswerses +
+                ", userQuestionResults=" + userQuestionResults +
                 ", result=" + result +
                 '}';
     }
@@ -158,12 +155,10 @@ public class UserResults {
 
         if (result != that.result) return false;
         if (userResultsId != that.userResultsId) return false;
-        if (correctQuestionAnswerses != null ? !correctQuestionAnswerses.equals(that.correctQuestionAnswerses) : that.correctQuestionAnswerses != null)
-            return false;
         if (dateOfPassed != null ? !dateOfPassed.equals(that.dateOfPassed) : that.dateOfPassed != null) return false;
         if (testName != null ? !testName.equals(that.testName) : that.testName != null) return false;
         if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
-        if (userQuestionAnswerses != null ? !userQuestionAnswerses.equals(that.userQuestionAnswerses) : that.userQuestionAnswerses != null)
+        if (userQuestionResults != null ? !userQuestionResults.equals(that.userQuestionResults) : that.userQuestionResults != null)
             return false;
         if (userSecret != null ? !userSecret.equals(that.userSecret) : that.userSecret != null) return false;
 
@@ -177,8 +172,7 @@ public class UserResults {
         result1 = 31 * result1 + (userSecret != null ? userSecret.hashCode() : 0);
         result1 = 31 * result1 + (testName != null ? testName.hashCode() : 0);
         result1 = 31 * result1 + (dateOfPassed != null ? dateOfPassed.hashCode() : 0);
-        result1 = 31 * result1 + (correctQuestionAnswerses != null ? correctQuestionAnswerses.hashCode() : 0);
-        result1 = 31 * result1 + (userQuestionAnswerses != null ? userQuestionAnswerses.hashCode() : 0);
+        result1 = 31 * result1 + (userQuestionResults != null ? userQuestionResults.hashCode() : 0);
         result1 = 31 * result1 + result;
         return result1;
     }
