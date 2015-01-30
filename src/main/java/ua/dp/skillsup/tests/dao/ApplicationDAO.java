@@ -2,6 +2,7 @@ package ua.dp.skillsup.tests.dao;
 
 import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
+import ua.dp.skillsup.tests.dao.entity.UserResults;
 
 import java.util.List;
 
@@ -25,4 +26,8 @@ public interface ApplicationDAO {
 
     public List<QuestionAnswers> getAllQuestionAnswersOfTestDescription(TestDescription testDescription);
     public List<TestDescription> getAllTestDescriptionOfQuestionAnswers(QuestionAnswers questionAnswers);
+
+    UserResults addUserResults(UserResults userResults);
+    UserResults getUserResults(long id);
+    List<UserResults> getAllResultsOfUser(String userName, String userSecret);
 }

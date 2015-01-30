@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
+import ua.dp.skillsup.tests.dao.entity.UserResults;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -155,5 +156,32 @@ public class ApplicationDAOImpl implements ApplicationDAO {
         TypedQuery<TestDescription> namedQuery = em.createQuery(queryString, TestDescription.class);
         namedQuery.setParameter("testName", testName);
         return namedQuery.getSingleResult();
+    }
+
+    @Override
+    public UserResults addUserResults(UserResults userResults) {
+        UserResults existingUserResults = em.find(UserResults.class, userResults.getUserResultsId());
+        if (existingUserResults == null){
+            em.persist(userResults);
+            return userResults;
+        }
+        else {
+            return em.merge(userResults);
+        }
+    }
+
+    @Override
+    public UserResults getUserResults(long id) {
+        return em.find(UserResults.class, id);
+    }
+
+    @Override
+    public List<UserResults> getAllResultsOfUser(String userName, String userSecret) {
+        String queryString = "SELECT ur FROM UserResults ur " +
+                "WHERE ur.userName = :userName AND ur.userSecret = :userSecret" ;
+        TypedQuery<UserResults> namedQuery = em.createQuery(queryString, UserResults.class);
+        namedQuery.setParameter("userName", userName);
+        namedQuery.setParameter("userSecret", userSecret);
+        return namedQuery.getResultList();
     }
 }

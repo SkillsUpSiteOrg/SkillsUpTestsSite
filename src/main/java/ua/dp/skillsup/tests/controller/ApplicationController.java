@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.dp.skillsup.tests.dao.entity.QuestionAnswers;
 import ua.dp.skillsup.tests.dao.entity.TestDescription;
+import ua.dp.skillsup.tests.dao.entity.UserResults;
 import ua.dp.skillsup.tests.service.ApplicationService;
 
 import java.util.HashMap;
@@ -173,7 +174,10 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/getResultOfPassedTest", method = RequestMethod.POST)
-    public @ResponseBody double getResultOfPassedTest(
+    public @ResponseBody int getResultOfPassedTest(
+            @RequestParam(value = "userName", required = true) String userName,
+            @RequestParam(value = "userSecret", required = true) String userSecret,
+            @RequestParam(value = "testName", required = true) String testName,
             @RequestParam(value = "userAnswers", required = true) String userAnswers) {
         String[] userAnswersArray = userAnswers.split("\"question\":\"");
         Map<String, Map<String, Boolean>> mapOfUserQuestionsAnswers = new HashMap<>();
@@ -195,9 +199,15 @@ public class ApplicationController {
                 mapOfUserQuestionsAnswers.put(question, mapOfAnswers);
             }
         }
-        //TODO Have to use mapOfUserQuestionsAnswers in service method to count user's result
         System.out.println(mapOfUserQuestionsAnswers);
-        return 0;
+        return service.addNewUserResults(userName, userSecret, testName, mapOfUserQuestionsAnswers);
+    }
+
+    @RequestMapping(value = "/getAllResultsOfUserBySecret", method = RequestMethod.POST)
+    public @ResponseBody List<UserResults> getAllResultsOfUserBySecret(
+            @RequestParam(value = "userName", required = true) String userName,
+            @RequestParam(value = "userSecret", required = true) String userSecret) {
+        return service.getAllResultsOfUser(userName, userSecret);
     }
 
 }
