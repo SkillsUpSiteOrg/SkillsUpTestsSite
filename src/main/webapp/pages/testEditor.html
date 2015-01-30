@@ -25,7 +25,8 @@
                 ng-click="setSelectedExistingQuestion($index)" ng-class="{'info':$index == index}">
                 <td>{{$index + 1}}</td>
                 <td>{{question.question}}</td>
-                <td><button class="btn btn-small btn-danger" ng-click="removeSelectedExistinqQuestion()">X</button></td>
+                <td><button class="btn btn-small btn-danger delete-item"
+                            ng-click="removeSelectedExistinqQuestion($index)">X</button></td>
             </tr>
         </tbody>
     </table>

@@ -56,12 +56,18 @@ public class QuestionAnswers {
 
     public void setTestDescriptionRelations(List<TestDescription> testDescriptionRelations) {
         if (this.testDescriptionRelations != testDescriptionRelations){
-            if (!this.getTestDescriptionRelations().isEmpty()){
-                this.getTestDescriptionRelations().clear();
+            if(testDescriptionRelations != null){
+                if (!this.getTestDescriptionRelations().isEmpty()){
+                    this.getTestDescriptionRelations().clear();
+                }
+                for (TestDescription testDescriptionRelation : testDescriptionRelations) {
+                    testDescriptionRelation.addQuestionAnswersRelation(this);
+                }
             }
-            for (TestDescription testDescriptionRelation : testDescriptionRelations) {
-                testDescriptionRelation.addQuestionAnswersRelation(this);
+            else {
+                this.testDescriptionRelations.clear();
             }
+
         }
         else {
             System.out.println("relations for this questionAnswers equals gets "+this.getQuestionAnswersId());

@@ -1,6 +1,7 @@
 package ua.dp.skillsup.tests.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,12 +12,15 @@ import java.util.Map;
 /**
  * Created by SERG on 29.01.15.
  */
+@Proxy(lazy=false)
 @Entity
 @Table(name = "USER_RESULTS")
 public class UserResults {
 
     public UserResults(){
         this.dateOfPassed = new Date();
+        this.correctQuestionAnswerses = new ArrayList<QuestionAnswers>();
+        this.userQuestionAnswerses = new ArrayList<QuestionAnswers>();
     }
 
     @Id
@@ -51,6 +55,10 @@ public class UserResults {
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "USER_ANSWERS_OF_TEST")
     private List<QuestionAnswers> userQuestionAnswerses;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "USER_ANSWERS_OF_TEST")
+    private Map<String,Integer> userQuestionResults;
 
     @Column(name = "RESULT")
     private int result;
@@ -117,6 +125,14 @@ public class UserResults {
 
     public void setResult(int result) {
         this.result = result;
+    }
+
+    public Map<String, Integer> getUserQuestionResultss() {
+        return userQuestionResults;
+    }
+
+    public void setUserQuestionResultss(Map<String, Integer> userQuestionResultss) {
+        this.userQuestionResults = userQuestionResultss;
     }
 
     @Override

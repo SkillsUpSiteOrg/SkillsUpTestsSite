@@ -141,7 +141,7 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     }
 
     @Override
-    public QuestionAnswers getQuestionAnswers(String question) {
+    public QuestionAnswers getQuestionAnswersByQuestion(String question) {
         String queryString = "SELECT qa FROM QuestionAnswers qa " +
                 "WHERE qa.question = :question" ;
         TypedQuery<QuestionAnswers> namedQuery = em.createQuery(queryString, QuestionAnswers.class);
@@ -150,7 +150,7 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     }
 
     @Override
-    public TestDescription getTestDescription(String testName) {
+    public TestDescription getTestDescriptionByName(String testName) {
         String queryString = "SELECT td FROM TestDescription td " +
                 "WHERE td.testName = :testName" ;
         TypedQuery<TestDescription> namedQuery = em.createQuery(queryString, TestDescription.class);

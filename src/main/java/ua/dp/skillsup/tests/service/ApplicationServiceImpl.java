@@ -72,13 +72,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public TestDescription getTestDescription(String testName) {
-        return dao.getTestDescription(testName);
+    public TestDescription getTestDescriptionByName(String testName) {
+        return dao.getTestDescriptionByName(testName);
     }
 
     @Override
-    public QuestionAnswers getQuestionAnswers(String question) {
-        return dao.getQuestionAnswers(question);
+    public QuestionAnswers getQuestionAnswersByQuestion(String question) {
+        return dao.getQuestionAnswersByQuestion(question);
     }
 
     @Override
@@ -123,42 +123,50 @@ public class ApplicationServiceImpl implements ApplicationService {
         UserResults userResults = new UserResults();
         userResults.setUserName(userName);
         userResults.setUserSecret(userSecret);
-        TestDescription existingTestDescription = dao.getTestDescription(testName);
+
+        TestDescription existingTestDescription = dao.getTestDescriptionByName(testName);
+
         if (existingTestDescription != null){
             userResults.setTestName(testName);
             if (mapOfUserQuestionsAnswers != null){
                 int[] arrayQuestionsPassPercent = new int[mapOfUserQuestionsAnswers.keySet().size()];
-                List<QuestionAnswers> allCorrectQuestionAnswers = dao.getAllQuestionAnswersOfTestDescription(existingTestDescription);
+
+                List<QuestionAnswers> allCorrectQuestionAnswers = existingTestDescription.getQuestionAnswersRelations();
+
                 if (allCorrectQuestionAnswers != null) {
+
                     int i=0;
                     for (String question : mapOfUserQuestionsAnswers.keySet()){
-                        QuestionAnswers currentQuestionAnswers = dao.getQuestionAnswers(question);
+                        QuestionAnswers currentQuestionAnswers = dao.getQuestionAnswersByQuestion(question);
                         if (currentQuestionAnswers != null) {
-                            if (allCorrectQuestionAnswers.contains(currentQuestionAnswers)){
                                 Map<String, Boolean> userAnswers = mapOfUserQuestionsAnswers.get(question);
-
-                                QuestionAnswers questionAnswersForUserAnswers = new QuestionAnswers();
-                                questionAnswersForUserAnswers.setQuestion(question);
-                                questionAnswersForUserAnswers.setAnswers(userAnswers);
-                                allQuestionAnswersForUserAnswers.add(questionAnswersForUserAnswers);
                                 arrayQuestionsPassPercent[i] = compareCorrectAndUserAnswers(currentQuestionAnswers.getAnswers(), userAnswers);
                                 i++;
-                            }
-                            else {
-                                System.out.println("Question - "+question+" - not belong questions of Test: "+testName);
-                            }
+
+
+                                /*QuestionAnswers questionAnswersForUserAnswers = new QuestionAnswers();
+                                questionAnswersForUserAnswers.setTestDescriptionRelations(null);;
+                                questionAnswersForUserAnswers.setQuestion(question);
+                                questionAnswersForUserAnswers.setAnswers(userAnswers);
+                                allQuestionAnswersForUserAnswers.add(questionAnswersForUserAnswers);*/
                         }
                         else {
                             System.out.println("In DB no one question with text: "+question);
                         }
                     }
-                    int summa = 0;
-                    for (int x : arrayQuestionsPassPercent){summa += x;}
-                    averageTestPassPercent = summa/arrayQuestionsPassPercent.length*100;
+                    System.out.println(allQuestionAnswersForUserAnswers);
+                    int sum = 0;
+                    for (int x : arrayQuestionsPassPercent){
+                        System.out.println(x);
+                        sum += x;
+                    }
+                    averageTestPassPercent = sum/arrayQuestionsPassPercent.length;
+                    System.out.println("RESULT: "+averageTestPassPercent);
+                    /*userResults.setCorrectQuestionAnswerses(allCorrectQuestionAnswers);*/
+                   /* userResults.setUserQuestionAnswerses(allQuestionAnswersForUserAnswers);*/
+                    System.out.println(userResults);
+                    System.out.println("!!!: "+dao.addUserResults(userResults));
 
-                    userResults.setCorrectQuestionAnswerses(allCorrectQuestionAnswers);
-                    userResults.setUserQuestionAnswerses(allQuestionAnswersForUserAnswers);
-                    dao.addUserResults(userResults);
                 }
                 else {
                     System.out.println("Test " + testName + " have not any questions");
@@ -178,20 +186,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private int compareCorrectAndUserAnswers(Map<String, Boolean> correctAnswers, Map<String, Boolean> userAnswers) {
-        int countCorrectAnswers = 0;
-        int countUncheckedAnswers = 0;
-        int countCheckedCorrectAnswers = 0;
-        int countCheckedWrongAnswers = 0;
-        int countNotCheckedWrongAnswers = 0;
-        int countNotCheckedCorrectAnswers = 0;
+        double countCorrectAnswers = 0;
+        double countUncheckedAnswers = 0;
+        double countCheckedCorrectAnswers = 0;
+        double countCheckedWrongAnswers = 0;
+        double countNotCheckedWrongAnswers = 0;
+        double countNotCheckedCorrectAnswers = 0;
 
         for (String currentCorrectAnswer : correctAnswers.keySet()) {
             if (userAnswers.containsKey(currentCorrectAnswer)) {
                 Boolean valueCorrectAnswer = correctAnswers.get(currentCorrectAnswer);
                 Boolean valueUserAnswer = userAnswers.get(currentCorrectAnswer);
-                if (valueCorrectAnswer.equals(true)){
+                if (valueCorrectAnswer){
                     countCorrectAnswers++;
-                    if (valueUserAnswer.equals(true)){
+                    if (valueUserAnswer){
                         countCheckedCorrectAnswers++;
                     }
                     else {
@@ -200,7 +208,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 }
                 else {
                     countUncheckedAnswers++;
-                    if (valueUserAnswer.equals(true)){
+                    if (valueUserAnswer){
                         countCheckedWrongAnswers++;
                     }
                     else {
@@ -213,7 +221,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
 
         if ((countNotCheckedWrongAnswers/countUncheckedAnswers > 0.5) && (countCheckedCorrectAnswers/countCorrectAnswers >= 0.5)){
-            return  (countNotCheckedWrongAnswers+countCheckedCorrectAnswers)/(countUncheckedAnswers+countCorrectAnswers)*100;
+            return  (int)((countNotCheckedWrongAnswers+countCheckedCorrectAnswers)/(countUncheckedAnswers+countCorrectAnswers)*100);
         }
         else {
             return 0;
