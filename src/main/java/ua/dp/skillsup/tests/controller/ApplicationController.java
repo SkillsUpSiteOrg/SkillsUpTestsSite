@@ -89,10 +89,10 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/removeSelectedTest", method = RequestMethod.POST)
-    public @ResponseBody String removeSelectedTest(
+    public @ResponseBody List<TestDescription> removeSelectedTest(
             @RequestParam(value = "testName", required = true) String testName) {
         service.deleteTestDescription(service.getTestDescriptionByName(testName));
-        return "{\"state\" : \"Successfully delete test "+testName+"\"}";
+        return service.getAllTestDescriptions();
     }
 
     /*For testing on the future*/

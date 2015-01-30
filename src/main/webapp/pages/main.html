@@ -13,20 +13,20 @@
   </form>
 
       <p> </p>
-      <button class="btn btn-default" ng-click="getAllTests()" aria-label="Get">Get all tests</button>
+      <!--<button class="btn btn-default" ng-click="getAllTests()" aria-label="Get">Get all tests</button>-->
 
     <table class="table table-striped">
         <thead>
         <tr>
             <th data-field="testDescriptionId" data-align="right">ID</th>
-            <th data-field="dateOfCreation" data-align="center">Date creation</th>
-            <th data-field="testName" data-align="center">Test name</th>
-            <th data-field="maxTimeToPassInMinutes" data-align="left">Minutes todo</th>
+            <th data-field="dateOfCreation" data-align="center">Test name</th>
+            <th data-field="testName" data-align="center">Minutes todo</th>
+            <th data-field="maxTimeToPassInMinutes" data-align="left">Date creation</th>
         </tr>
         </thead>
         <tbody ui-sortable ng-model="tests"><tr ng-repeat="test in tests" style="padding:5px 10px; cursor: move;"
                                                 ng-click="setSelected($index)" ng-class="{'info':$index == index}">
-            <td>{{test.testDescriptionId}}</td>
+            <td>{{$index+1}}</td>
             <td>{{test.testName}}</td>
             <td>{{test.maxTimeToPassInMinutes}}</td>
             <td>{{test.dateOfCreation | date:'dd-MM-yyyy HH:mm:ss'}}</td>

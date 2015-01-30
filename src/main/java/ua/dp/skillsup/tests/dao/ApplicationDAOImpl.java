@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,6 +39,13 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     @Override
     public void deleteTestDescription(TestDescription testDescription){
         TestDescription test = em.find(TestDescription.class, testDescription.getTestDescriptionId());
+        List<QuestionAnswers> questionAnswersRelations = test.getQuestionAnswersRelations();
+        Iterator<QuestionAnswers> iter = questionAnswersRelations.iterator();
+        while(iter.hasNext()){
+            QuestionAnswers questionAnswer = iter.next();
+            questionAnswer.getTestDescriptionRelations().remove(test);
+        }
+        test.setQuestionAnswersRelations(new ArrayList<QuestionAnswers>());
         em.remove(test);
     }
 
@@ -48,7 +57,6 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     @Override
     public void updateTestDescription(long id, TestDescription testDescription){
         TestDescription newTest = getTestDescription(id);
-        //System.out.println(newTest);
         if(newTest != null){
             if (getTestDescription(id).equals(newTest)){
                 newTest.setTestName(testDescription.getTestName());

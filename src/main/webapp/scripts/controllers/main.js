@@ -5,13 +5,15 @@
 angular.module('SkillsUpTests')
   .controller('MainCtrl',function ($rootScope, $scope, localStorageService, $http, $location) {
     var host = $location.absUrl().substr(0, $location.absUrl().lastIndexOf("#"));
+    $http.get(host+'getAllTestDescriptions').success(function(data) {
+        $scope.tests = data;
+        localStorageService.set('tests', $scope.tests);
+    })
 
     $scope.getAllTests = function () {
         $http.get(host+'getAllTestDescriptions').success(function(data) {
-            console.log(data);
             $scope.tests = data;
             localStorageService.set('tests', $scope.tests);
-
         })
     };
 
@@ -31,8 +33,7 @@ angular.module('SkillsUpTests')
             url: host+'addNewTestDescription',
             data: $.param({"testName":$scope.testName, "maxTimeToPassInMinutes":$scope.maxTimeToPassInMinutes}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-            .success(function(data) {
+        }).success(function(data) {
             $scope.message = data;
                 console.log($scope.message);
         });
@@ -56,10 +57,8 @@ angular.module('SkillsUpTests')
             url: host+'removeSelectedTest',
             data: $.param({"testName":$scope.selected.testName}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-            .success(function(data) {
-                $scope.message = data;
-                console.log($scope.message);
+        }).success(function(data) {
+            $scope.tests = data;
             });
     }
 
