@@ -201,8 +201,8 @@ public class ApplicationServiceImpl implements ApplicationService {
             }
         }
 
-        if ((countNotCheckedWrongAnswers/countUncheckedAnswers > 0.5) && (countCheckedCorrectAnswers/countCorrectAnswers >= 0.5)){
-            return  (int)((countNotCheckedWrongAnswers+countCheckedCorrectAnswers)/(countUncheckedAnswers+countCorrectAnswers)*100);
+        if ((countCheckedCorrectAnswers>0)&&(countCheckedWrongAnswers==0)){
+            return (int)((countCheckedCorrectAnswers/countCorrectAnswers)*100);
         }
         else {
             return 0;
