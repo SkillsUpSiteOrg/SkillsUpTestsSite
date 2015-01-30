@@ -10,7 +10,6 @@ angular.module('SkillsUpTests')
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data) {
                 $scope.questionsOfTest = data;
-                console.log($scope.questionsOfTest);
                 $scope.initUserAnswers();
             });
 
@@ -23,15 +22,17 @@ angular.module('SkillsUpTests')
                     })
                     $scope.userAnswers.push({question: questionValue.question, variantsOfAnswer: variantsOfAnswer});
                 }
-
             );
-            console.log($scope.userAnswers);
         }
 
         $scope.counter = $scope.selectedTest.maxTimeToPassInMinutes;
         $scope.onTimeout = function(){
             $scope.counter--;
             mytimeout = $timeout($scope.onTimeout,60000);
+            if($scope.counter === 0){
+                $scope.stop();
+                $scope.finishTest();
+            }
         }
         var mytimeout = $timeout($scope.onTimeout,60000);
 
@@ -40,11 +41,11 @@ angular.module('SkillsUpTests')
         }
 
         $scope.finishTest = function(){
-            console.log($scope.userAnswers);
             /*var testResult = $resource(host+'getResultOfPassedTest', {}, {saveData: {method:'POST', isArray: true}});
             $scope.doSubmit = function() {
                 testResult.saveData($scope.userAnswers);
             }*/
+            $scope.stop();
             $http({
                 method: 'POST',
                 url: host+'getResultOfPassedTest',
@@ -56,8 +57,8 @@ angular.module('SkillsUpTests')
                 }),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function(data) {
-                $scope.resultOfTest = data;
+                $rootScope.resultOfTest = data;
+                $location.path('/testResult');
             });
         }
-
     });

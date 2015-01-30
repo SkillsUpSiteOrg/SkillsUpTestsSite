@@ -16,8 +16,6 @@ public class UserResults {
 
     public UserResults(){
         this.dateOfPassed = new Date();
-        /*this.correctQuestionAnswerses = new ArrayList<QuestionAnswers>();
-        this.userQuestionAnswerses = new ArrayList<QuestionAnswers>();*/
         this.userQuestionResults = new HashMap<String, Integer>();
     }
 
@@ -39,20 +37,6 @@ public class UserResults {
 
     @Column(name = "DATE_OF_PASSED")
     private Date dateOfPassed;
-
-/*
-    @Column
-    private int percentOfTimeToPass;
-*/
-
-    /*@JsonIgnore
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "ETALON_ANSWERS_OF_TEST")
-    private List<QuestionAnswers> correctQuestionAnswerses;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "USER_ANSWERS_OF_TEST")
-    private List<QuestionAnswers> userQuestionAnswerses;*/
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "USER_ANSWERS_OF_TEST")
@@ -101,22 +85,6 @@ public class UserResults {
         this.dateOfPassed = dateOfPassed;
     }
 
-    /*public List<QuestionAnswers> getCorrectQuestionAnswerses() {
-        return correctQuestionAnswerses;
-    }
-
-    public void setCorrectQuestionAnswerses(List<QuestionAnswers> correctQuestionAnswerses) {
-        this.correctQuestionAnswerses = correctQuestionAnswerses;
-    }
-
-    public List<QuestionAnswers> getUserQuestionAnswerses() {
-        return userQuestionAnswerses;
-    }
-
-    public void setUserQuestionAnswerses(List<QuestionAnswers> userQuestionAnswerses) {
-        this.userQuestionAnswerses = userQuestionAnswerses;
-    }
-*/
     public int getResult() {
         return result;
     }

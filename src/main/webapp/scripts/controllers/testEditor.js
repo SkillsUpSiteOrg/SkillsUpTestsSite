@@ -14,7 +14,6 @@ angular.module('SkillsUpTests')
         })
             .success(function(data) {
                 $scope.questionsOfTest = data;
-                console.log($scope.questionsOfTest);
             });
         $http({
             method: 'GET',
@@ -22,7 +21,6 @@ angular.module('SkillsUpTests')
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data) {
                 $scope.allQuestions = data;
-                console.log($scope.allQuestions);
             });
 
         $scope.setSelectedExistingQuestion = function(index) {
@@ -42,15 +40,11 @@ angular.module('SkillsUpTests')
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function(data) {
                 $scope.message = data;
-                console.log($scope.message);
             });
             $location.path('/testEditor');
         };
 
         $scope.editTest = function () {
-            //console.log($scope.selected);
-            console.log($scope.selectedTest.testName);
-            console.log($scope.selectedTest.maxTimeToPassInMinutes);
             $http({
                 method: 'POST',
                 url: host+'editTestDescription',
@@ -62,7 +56,6 @@ angular.module('SkillsUpTests')
             })
                 .success(function(data) {
                     $scope.message = data;
-                    console.log($scope.message);
                 });
             $location.path('/main');
         };
@@ -74,9 +67,6 @@ angular.module('SkillsUpTests')
         };
 
         $scope.addNewQuestionToTest = function(){
-            console.log($scope.selectedTest.testName);
-            console.log($scope.newQuestion.text);
-            console.log(JSON.stringify($scope.newQuestion.answers));
             $location.path('testEditor');
             $http({
                 method: 'POST',
@@ -94,14 +84,12 @@ angular.module('SkillsUpTests')
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 }).success(function(data) {
                     $scope.questionsOfTest = data;
-                    console.log($scope.questionsOfTest);
                     $http({
                         method: 'GET',
                         url: host+'getAllQuestionAnswers',
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     }).success(function(data) {
                         $scope.allQuestions = data;
-                        console.log($scope.allQuestions);
                     });
                 })
             });
@@ -109,7 +97,6 @@ angular.module('SkillsUpTests')
         };
 
         $scope.addExistingQuestionsToTest = function(){
-            console.log($scope.selectedAllQuestions);
             $http({
                 method: 'POST',
                 url: host+'addRelationForTestAndQuestion',
@@ -125,7 +112,6 @@ angular.module('SkillsUpTests')
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 }).success(function(data) {
                     $scope.questionsOfTest = data;
-                    console.log($scope.questionsOfTest);
                 });
             })
             //TODO This code left here for descendants to show how stuff shouldn't be done

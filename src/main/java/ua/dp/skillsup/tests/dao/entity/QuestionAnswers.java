@@ -69,9 +69,6 @@ public class QuestionAnswers {
             }
 
         }
-        else {
-            System.out.println("relations for this questionAnswers equals gets "+this.getQuestionAnswersId());
-        }
     }
 
     public void addTestDescriptionRelation(TestDescription testDescription) {

@@ -62,9 +62,6 @@ public class TestDescription {
                 questionAnswers.addTestDescriptionRelation(this);
             }
         }
-        else {
-            System.out.println("relations fot this testDescription equals gets "+this.getTestDescriptionId());
-        }
     }
 
     public void addQuestionAnswersRelation(QuestionAnswers questionAnswers) {

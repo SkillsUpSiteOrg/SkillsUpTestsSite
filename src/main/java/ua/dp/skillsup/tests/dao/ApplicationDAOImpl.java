@@ -95,8 +95,6 @@ public class ApplicationDAOImpl implements ApplicationDAO {
     public void deleteQuestionAnswers(QuestionAnswers questionAnswers) {
         questionAnswers = this.em.merge(questionAnswers);
         this.em.remove(questionAnswers);
-        /*QuestionAnswers questionAnswers_ = this.em.find(QuestionAnswers.class, questionAnswers.getQuestionAnswersId());
-        this.em.remove(questionAnswers_);*/
     }
 
     @Override
@@ -106,7 +104,7 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
     @Override
     public void updateQuestionAnswers(long id, QuestionAnswers questionAnswers) {
-        QuestionAnswers newQuestionAnswers = getQuestionAnswers(id); /*em.find(QuestionAnswers.class, id)*/
+        QuestionAnswers newQuestionAnswers = getQuestionAnswers(id);
         if( newQuestionAnswers!= null){
             if (getQuestionAnswers(id).equals(newQuestionAnswers)){
                 newQuestionAnswers.setQuestion(questionAnswers.getQuestion());

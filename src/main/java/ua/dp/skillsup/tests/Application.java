@@ -24,7 +24,7 @@ public class Application {
         ApplicationDAO dao = context.getBean("applicationDao", ApplicationDAO.class);
         //Initializing data to test Application
         application.initialize(context, dao);
-        application.getStateDB(context, dao);
+        //application.getStateDB(context, dao);
     }
 
     public void getStateDB(ApplicationContext context, ApplicationDAO dao){
@@ -50,13 +50,13 @@ public class Application {
         //Creating new tests
         TestDescription test1 = new TestDescription();
         test1.setTestName("Java-0");
-        test1.setMaxTimeToPassInMinutes(90);
+        test1.setMaxTimeToPassInMinutes(1);
         TestDescription test2 = new TestDescription();
         test2.setTestName("Java-1");
-        test2.setMaxTimeToPassInMinutes(60);
+        test2.setMaxTimeToPassInMinutes(15);
         TestDescription test3 = new TestDescription();
         test3.setTestName("Java-2");
-        test3.setMaxTimeToPassInMinutes(120);
+        test3.setMaxTimeToPassInMinutes(20);
         //Creating new questions
         QuestionAnswers question1 = new QuestionAnswers();
         question1.setQuestion("What are main three words?");

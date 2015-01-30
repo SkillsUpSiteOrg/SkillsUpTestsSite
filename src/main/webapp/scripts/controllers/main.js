@@ -21,33 +21,27 @@ angular.module('SkillsUpTests')
         $scope.selected = this.test;
         $rootScope.testForEdit = $scope.selected;
         $scope.index = index;
-        console.log($scope.selected);
-        //console.log($scope.index);
     };
 
     $scope.addNewTest = function() {
-        console.log($scope.testName);
-        console.log($scope.maxTimeToPassInMinutes);
         $http({
             method: 'POST',
             url: host+'addNewTestDescription',
             data: $.param({"testName":$scope.testName, "maxTimeToPassInMinutes":$scope.maxTimeToPassInMinutes}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data) {
-            $scope.message = data;
-                console.log($scope.message);
+            $scope.tests = data;
+
         });
         $scope.testName = '';
         $scope.maxTimeToPassInMinutes = '';
     };
 
     $scope.editSelectedTest = function(){
-        //console.log($scope.selected);
         $location.path('testEditor');
     };
 
     $scope.passSelectedTest = function(){
-        //console.log($scope.selected);
         $location.path('passTest');
     };
 

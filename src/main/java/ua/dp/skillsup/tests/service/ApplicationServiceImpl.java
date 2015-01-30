@@ -134,23 +134,20 @@ public class ApplicationServiceImpl implements ApplicationService {
                         if (currentQuestionAnswers != null) {
                             Map<String, Boolean> userAnswers = mapOfUserQuestionsAnswers.get(question);
                             userQuestionResults.put(question, compareCorrectAndUserAnswers(currentQuestionAnswers.getAnswers(), userAnswers));
-                            System.out.println(userQuestionResults.get(question)+"% for Question: "+question);
                         }
                         else {
-                            System.out.println("In DB no one question with text: "+question);
+                            System.out.println("There is no question in DB with such text: "+question);
                         }
                     }
                     int sum = 0;
                     for (int x : userQuestionResults.values()){sum += x;}
                     averageTestPassPercent = sum/userQuestionResults.values().size();
-                    System.out.println("RESULT: "+averageTestPassPercent);
                     userResults.setResult(averageTestPassPercent);
                     userResults.setUserQuestionResults(userQuestionResults);
-                    System.out.println(userResults);
                     System.out.println("!!!: "+dao.addUserResults(userResults));
                 }
                 else {
-                    System.out.println("Test " + testName + " have not any questions");
+                    System.out.println("Test " + testName + " doesn't have any questions");
                     averageTestPassPercent = -1;
                 }
             }

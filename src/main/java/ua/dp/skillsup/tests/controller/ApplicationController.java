@@ -97,7 +97,7 @@ public class ApplicationController {
 
     /*For testing on the future*/
     @RequestMapping(value = "/addNewTestDescription", method = RequestMethod.POST)
-    public @ResponseBody String addNewTestDescription(
+    public @ResponseBody List<TestDescription> addNewTestDescription(
             @RequestParam(value = "testName", required = true) String testName,
             @RequestParam(value = "maxTimeToPassInMinutes", required = true) int maxTimeToPassInMinutes,
             @RequestParam(value = "questionAnswersRelations", required = false) List<String> questionAnswersRelations) {
@@ -111,7 +111,7 @@ public class ApplicationController {
             }
             service.updateTestDescription(testDescription.getTestDescriptionId(),testDescription);
         }
-        return "{\"state\" : \"Successfully added new test "+testDescription.getTestName()+"\"}";
+        return service.getAllTestDescriptions();
     }
 
     @RequestMapping(value = "/addNewQuestionAnswers", method = RequestMethod.POST)
@@ -147,7 +147,6 @@ public class ApplicationController {
                 questionsList.add(question);
             }
         }
-        System.out.println(questionsList);
         TestDescription testDescription = service.getTestDescriptionByName(testName);
         for(String question : questionsList){
             testDescription.addQuestionAnswersRelation(service.getQuestionAnswersByQuestion(question));
@@ -212,11 +211,6 @@ public class ApplicationController {
                 mapOfUserQuestionsAnswers.put(question, mapOfAnswers);
             }
         }
-        //TODO Have to use mapOfUserQuestionsAnswers in service method to count user's result
-        System.out.println(testName);
-        System.out.println(login);
-        System.out.println(password);
-        System.out.println(mapOfUserQuestionsAnswers);
         return service.addNewUserResults(login, password, testName, mapOfUserQuestionsAnswers);
     }
 
